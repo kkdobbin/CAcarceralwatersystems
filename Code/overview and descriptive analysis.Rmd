@@ -1,0 +1,120 @@
+---
+title: "Examination of CA carceral water systems"
+author: "Kristin Dobbin"
+date: "2023-06-07"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE, echo=FALSE}
+knitr::opts_knit$set(root.dir = "/Users/KristinDobbin/Library/CloudStorage/Dropbox/Projects/R_Projects/CAcarceralwatersystems", warning=FALSE, message=FALSE, include=FALSE)
+```
+
+
+```{r setup2, include=FALSE, echo=FALSE}
+
+library(tidyverse)
+
+Data <- read_csv("Data/FINAL 2023 Inst. type update.csv")
+Data <- Data[-c(2968:3689),-c(5:9, 12:15)]
+
+Data$Primacy_FINAL <- as.factor(Data$Primacy_FINAL)
+Data$PWSID <- as.factor(Data$PWSID)
+Data$Counties_Served <- as.factor(Data$Counties_Served)
+Data$Final_inst_update <- as.factor(Data$Final_inst_update)
+Data$Inst_Subtype <- as.factor(Data$Inst_Subtype)
+Data$SAFER_status_2023 <- as.factor(Data$SAFER_status_2023)
+
+Carceral <- Data %>% filter(Inst_Subtype == "Carceral")
+```
+
+## Overview and background
+
+California counts `r nrow(Data)` community water systems. Of these systems,  `r sum(Data$Primacy_FINAL=="EPA Region 9")` are regulated by USA EPA Region 9 due to their location/service on Tribal lands. The remaining `r (nrow(Data)) - sum(Data$Primacy_FINAL=="EPA Region 9")` fall under California regulatory primacy for Safe Drinking Water Act compliance and are regulated by the State Water Resources Control Board and sometimes also their local county, depending on their size. 
+
+Of these systems, `r nrow(Carceral)` specifically exist to serve carceral facilities including jails, prisons and camps. Given that California has approximately 205 such facilities (Not sure about this #!), this subset of water systems represents about a quarter of state carceral facilities and are likely among the most rural/isolated facilities. This analysis takes an initial look at this specific subset of water systems. At the end of the document I discuss other carceral water systems in the state not included in this analysis and the data gaps related to those systems.  
+
+## Carceral water system basics
+
+```{r load more data, include=FALSE, warning=FALSE}
+SDWIS <- read_csv("Data/Water System Summary_20230607.csv")
+SDWIS <- SDWIS[-c(1:3),]
+names(SDWIS) <- SDWIS[1,]
+SDWIS <- SDWIS[-1,]
+Carceral <- left_join(Carceral, SDWIS, by = c("PWSID" = "PWS ID"))
+Carceral <- rename(Carceral, "Population_served" = "Population<br> Served Count")
+Carceral$Population_served <- as.integer(Carceral$Population_served)
+```
+
+Cumulatively, these `r nrow(Carceral)` water systems serve  `r sum(Carceral$Population_served)` people. But on average each individual system serves `r round(mean(Carceral$Population_served),0)`. `r sum(Carceral$Final_inst_update == "State")` of these systems are State-run systems, most of which are conservation camps and another `r sum(Carceral$Final_inst_update == "County")` are County-run systems, mostly County jails. The systems are located across the sate in `r length(unique(Carceral$Counties_Served))` different counties.
+
+```{r county table, echo=FALSE, warning=FALSE}
+Carceral$Counties_Served <- droplevels(Carceral$Counties_Served)
+knitr::kable(summary(na.omit(Carceral$Counties_Served)), col.names = "# of systems")
+```
+
+Most of the systems rely on groundwater. 
+
+```{r water source table, echo=FALSE, warning=FALSE}
+Carceral$`Primary Source` <- as.factor(Carceral$`Primary Source`)
+knitr::kable(summary(Carceral$`Primary Source`), col.names = "water source")
+```
+
+
+## Carceral system performance 
+
+```{r load SAFER data, echo=FALSE, warning=FALSE, message=FALSE}
+SAFER <- read.csv("Data/Drinking_Water_Risk_Assessment.CSV.csv")
+SAFER$WATER_SYSTEM_NUMBER <- as.factor(SAFER$WATER_SYSTEM_NUMBER)
+Carceral <- left_join(Carceral, SAFER, by = c("PWSID" = "WATER_SYSTEM_NUMBER"))
+Carceral$FINAL_SAFER_STATUS <- as.factor(Carceral$FINAL_SAFER_STATUS)
+
+```
+
+According to 2023 California drinking water needs assessment conducted by the State Water Resources Control Board, two (`r round((2/45)*100,0)`%) of these systems are currently on the state's failing list, another 14 (`r round((14/45)*100,0)`%) were found to be at risk and another 5 are potentially at risk. Just 24 of the 45 systems are considered not at-risk. 
+
+The following table compares the aggregated risk assessment scores for carceral water systems compared to all other water systems for water quality, accessibility and TMF capacity respectively. 
+
+```{r SAFER scores, echo=FALSE, warning=FALSE, message=FALSE}
+Data <- Data %>%
+  mutate(Carceral = case_when(Inst_Subtype=="Carceral"~"Carceral",
+                              .default = "Not Carceral"))
+Data$Carceral <- as.factor(Data$Carceral)
+
+DataSmall <- left_join(Data, SAFER, by = c("PWSID" = "WATER_SYSTEM_NUMBER"))
+DataSmall <- DataSmall %>% select(WATER_QUALITY_RISK_LEVEL, ASSESSIBILITY_RISK_LEVEL, TMF_CAPACITY_RISK_LEVEL, Carceral)
+DataSmall <- DataSmall %>% mutate_if(is.character, as.factor)
+library(gtsummary)
+DataSmall %>%
+  tbl_summary(by = Carceral, missing = "no") 
+```
+
+
+```{r SAFER violations, echo=FALSE, warning=FALSE, message=FALSE}
+DataSmall2 <- left_join(Data, SAFER, by = c("PWSID" = "WATER_SYSTEM_NUMBER"))
+DataSmall2 <- DataSmall2 %>% select(PRIMARY_MCL_VIOLATION, SECONDARY_MCL_VIOLATION, E_COLI_VIOLATION, TREATMENT_TECHNIQUE_VIOLATION, MONITORING_AND_REPORTING_VIOLATION, Carceral)
+
+DataSmall2 %>%
+  tbl_summary(by = Carceral, missing = "no") 
+```
+  
+
+
+## This is an INCOMPLETE look at cerceral water systems 
+
+### Carceral facilities connected to larger water systems
+
+Many of the carceral facilities not addressed herein are connected to larger water systems, in other words, facilities that are receiving water from nearby municipalities or special districts. While there is reason to believe that this larger subset of systems, overall, may have better water access (considering quality but also quantity and future sustainability) to the systems explored herein due to their larger size, there are larger water systems that struggle with these things. Other efforts to identify the water sources for these facilities have used spatial methods, locating facility addresses within water system boundary records, or used planning/permitting records to locate public water system identification numbers.  
+
+### Federal facilities
+
+Based on Dobbin, Fencl and McBride 2023 data, none of the ten federal prisons in California have their own water system yet 6 of 10 are located outside of the public water system boundaries documented in SWRCB's map. Based on internet research, several of these appear to be served by nearby city systems or small state or county operated systems (and thus are included in the above excluded group) but for several we have been unable to identify water sources. 
+
+### Immigration facilities
+
+Various online sources provide different information about how many immigration and detention facilities there are in California, likely the number is in the neighborhood of six or seven. Likely these systems are either co-located with other carceral facilities or served by larger water systems but this should be confirmed.  
+
+### NTNC systems
+
+Finally, in the course of other research efforts, we have identified seven Conservation Camps run by the California Department of Corrections and Cal-Fire are listed in Public Drinking Water Watch as Non-Transient Non-Community water systems. Because the starting point for this analsyis was a list of California Community Water Systems, these systems are currently not included here, nor in the SWRCB's Drinking Water Needs Assessment. Thus SAFER risk scores do not exist for these systems. Nonetheless, as Public Water Systems, there is some data on these systems maintained in the SDWIS database that could be employed in future iterations. 
