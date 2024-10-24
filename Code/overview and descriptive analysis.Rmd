@@ -5,16 +5,17 @@ date: "2023-06-07"
 output:
   pdf_document: default
   html_document: default
+knit: (function(rmdfile, ...) { rmarkdown::render(rmdfile, output_dir=here::here("Docs"))})
 ---
 
 ```{r setup, include=FALSE, echo=FALSE}
-knitr::opts_knit$set(root.dir = "/Users/KristinDobbin/Library/CloudStorage/Dropbox/Projects/R_Projects/CAcarceralwatersystems", warning=FALSE, message=FALSE, include=FALSE)
+knitr::opts_knit$set(root.dir = "/Users/KristinDobbin/Documents/Projects/R_Projects_Active/CAcarceralwatersystems", warning=FALSE, message=FALSE, include=FALSE)
+
+library(tidyverse)
 ```
 
 
-```{r setup2, include=FALSE, echo=FALSE}
-
-library(tidyverse)
+```{r get and prep data, include=FALSE, echo=FALSE}
 
 Data <- read_csv("Data/FINAL 2023 Inst. type update.csv")
 Data <- Data[-c(2968:3689),-c(5:9, 12:15)]
@@ -65,7 +66,7 @@ knitr::kable(summary(Carceral$`Primary Source`), col.names = "water source")
 ## Carceral system performance 
 
 ```{r load SAFER data, echo=FALSE, warning=FALSE, message=FALSE}
-SAFER <- read.csv("Data/Drinking_Water_Risk_Assessment.CSV.csv")
+SAFER <- read.csv("Data/Drinking_Water_Risk_Assessment_2023.CSV.csv")
 SAFER$WATER_SYSTEM_NUMBER <- as.factor(SAFER$WATER_SYSTEM_NUMBER)
 Carceral <- left_join(Carceral, SAFER, by = c("PWSID" = "WATER_SYSTEM_NUMBER"))
 Carceral$FINAL_SAFER_STATUS <- as.factor(Carceral$FINAL_SAFER_STATUS)
