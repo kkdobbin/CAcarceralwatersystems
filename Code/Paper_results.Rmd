@@ -1,0 +1,152 @@
+---
+title: "Draft paper results Aug 14"
+author: "Kristin Dobbin"
+date: "2025-08-14"
+output:
+  pdf_document: default
+  html_document: default
+knit: (function(rmdfile, ...) { rmarkdown::render(rmdfile, output_dir=here::here("Docs"))})
+---
+
+```{r setup, include=FALSE, echo=FALSE}
+knitr::opts_knit$set(root.dir = "/Users/KristinDobbin/Documents/Projects/R_Projects_Active/CAcarceralwatersystems", warning=FALSE, message=FALSE, include=FALSE)
+
+library(tidyverse)
+library(gtsummary)
+```
+
+
+```{r get and prep data, include=FALSE, echo=FALSE}
+Data <- read_csv("Data/Fullpaperdata.csv")
+Data <- Data %>% mutate(across(c(pwsid, state_classification, regulating_agency, carceral_sys, binary_viol_over5yrs_mcl, binary_viol_over5yrs_mon, CASDWIS_County, watersource, purchased, Failing_Status, SAFER_Status, Absence_of_Interties, Source_Capacity_Violations, Bottled_Water_or_Hauled_Water_Reliance, Significant_Deficiencies, SC5e_Drought_Impact, Distributiondis_any), as.factor))
+Data$Missing_ccr_any <- as.factor(ifelse(Data$n_ccr_missing > 0, "Yes", "No"))
+Data$Missing_ccr_twoplus <- as.factor(ifelse(Data$n_ccr_missing >= 2, "Yes", "No"))
+```
+
+## Data overview
+
+Our data set includes `r nrow(Data)` unique public water systems representing all of the public water with spatial boundary data in SABL (confirm). Of these water systems `r sum(Data$state_classification == "COMMUNITY")` are community water systems, `r sum(Data$state_classification == "NON-TRANSIENT NON-COMMUNITY")` are Non-Transient Non-Community systems and `r sum(Data$state_classification == "TRANSIENT NON-COMMUNITY")` are Transient Non-Community systems. The mean population served by these systems is `r mean(Data$population)`. 
+
+## Describing carceral water systems
+
+We classify these systems into three categories: Carceral water systems that primarily or exclusively serve carceral facilities operated by the operator of the facility;  non-exclusive carceral water systems that serve one or more carceral facilities in addition to other customers and non-carceral systems that do not serve any carceral faciltiies. We find that `r sum(Data$carceral_sys == "exclusive_carceral")` or `r ((sum(Data$carceral_sys == "exclusive_carceral"))/nrow(Data)*100)`% are carceral water systems.  `r sum(Data$carceral_sys == "nonexclusive_carceral")` or `r ((sum(Data$carceral_sys == "nonexclusive_carceral"))/nrow(Data)*100)`% are non-exclusive carceral systems and  `r sum(Data$carceral_sys == "non_carceral")` or `r ((sum(Data$carceral_sys == "non_carceral"))/nrow(Data)*100)`% are noncarceral systems. 
+
+```{r describing carceral water system characteristics, echo=FALSE, warning=FALSE, message=FALSE}
+System_descriptives <- Data[, c(3,5,8,15,16)]
+
+Table <- System_descriptives %>% tbl_summary(by = carceral_sys)
+
+kable_Table <- Table %>% as_kable_extra(); kable_Table
+```
+
+As you can see above, many of the non-exclusive carceral systems rely on surface water. Which is interesting. Many of those systems are concentrated in the bay area, Sacramento and northern central valley areas and southern california whereas exclusive carceral systems are fairly evenly spread throughout the state.
+
+```{r describing carceral water system map, echo=FALSE, warning=FALSE, message=FALSE, include=FALSE}
+library(ggmap)
+library(sf)
+library(sp)
+
+#load in boundary polygons for CWS
+PWS_boundary <- st_read("Data/California_Drinking_Water_System_Area_Boundaries/") #SABL downloaded November 15, 2024
+str(PWS_boundary)
+
+PWS_boundary$SABL_PWSID <- as.factor(PWS_boundary$SABL_PWSID)
+PWS_boundary$WATER_SYST <- as.factor(PWS_boundary$WATER_SYST)
+PWS_boundary <- PWS_boundary %>% filter(BOUNDARY_T != "Jurisdictional") #remove jurisdictional boundaries to get rid of duplicates
+
+Geodata <- Data
+Geodata <- left_join(Geodata, PWS_boundary, by = c("pwsid" = "SABL_PWSID"))
+Geodata <- Geodata %>% distinct(pwsid, .keep_all = TRUE) #get rid of duplicate
+
+#get centroids
+Geodata$Centroid <- NA
+Geodata$Centroid <- st_centroid(Geodata$geometry) #Get centroids to service area boundaries
+
+#Basemaps
+caCountiesTmp <- tigris::counties(state = 06) %>%
+  st_as_sf()
+
+Geodata <- st_as_sf(Geodata, sf_column_name = "Centroid")
+
+#maps - statewide
+Map <- ggplot() +
+  geom_sf(data = caCountiesTmp, fill = "white") +
+  geom_sf(mapping = aes(colour = carceral_sys, geometry = Centroid), size = .35, data = Geodata, inherit.aes = FALSE) +
+  scale_color_manual(values = c("exclusive_carceral" = "red", "non_carceral" = "black", "nonexclusive_carceral" = "green")) +
+  labs(color = "System Type") +
+  theme(text = element_text(family = "Helvetica"))
+
+```
+
+```{r system map, echo=FALSE, warning=FALSE, message=FALSE, }
+Map
+```
+
+
+## Outcome (performance) descriptive results
+
+Next we can see if these categories of water systems perform differently using different performance measures related to water quality, accessibility and TMF capacity.
+
+
+```{r describing performance outcomes by category, echo=FALSE, warning=FALSE, message=FALSE}
+
+Outcomes <- Data[,c(8,11,12,9,10,24,25,27,28,32,33,34,35,36,37,38,39,40,42,43,44)]
+
+Table2 <- Outcomes %>% tbl_summary(by = carceral_sys, missing = "no")
+
+kable_Table2 <- Table2 %>% as_kable_extra(); kable_Table2
+```
+
+
+## GLMs for outcomes with controls
+
+
+Lastly we can use GLMs to see if any of these relationships are stastisticallly significant while holding other driving factors like system size constant. 
+
+
+```{r GLMs, warning=FALSE, message=FALSE}
+Data$carceral_sys <- relevel(Data$carceral_sys, ref = "non_carceral")
+
+MCL_violations <- glm(binary_viol_over5yrs_mcl ~ carceral_sys + population + watersource + purchased + state_classification, data = Data, family= binomial)
+summary(MCL_violations)
+
+MR_violations <- glm(binary_viol_over5yrs_mon ~ carceral_sys + population + watersource + purchased + state_classification, data = Data, family= binomial)
+summary(MR_violations)
+
+NA_WQ <- lm(Water_Quality_Category_Score ~ carceral_sys + population + watersource + purchased + state_classification, data = Data, family= binomial)
+summary(NA_WQ)
+
+NA_AC <- lm(Accessibility_Category_Score ~ carceral_sys + population + watersource + purchased + state_classification, data = Data, family= binomial)
+summary(NA_AC)
+
+NA_TMF <- lm(TMF_Capacity_Category_Score ~ carceral_sys + population + watersource + purchased + state_classification, data = Data, family= binomial)
+summary(NA_TMF)
+
+Data$Failingoratrisk <- ifelse(Data$SAFER_Status == "Failing" | Data$SAFER_Status == "At-Risk", 1, 0)
+Data$failing <- ifelse(Data$SAFER_Status == "Failing", 1, 0)
+
+Fail_or_atrisk <- lm(Failingoratrisk ~ carceral_sys + population + watersource + purchased + state_classification, data = Data, family= binomial)
+summary(Fail_or_atrisk)
+
+Fail <- lm(failing ~ carceral_sys + population + watersource + purchased + state_classification, data = Data, family= binomial)
+summary(Fail)
+
+CCR_anymissing <- glm(Missing_ccr_any ~ carceral_sys + population + watersource + purchased + state_classification, data = Data, family= binomial)
+summary(CCR_anymissing)
+
+CCR_missingtwoplus <- glm(Missing_ccr_twoplus ~ carceral_sys + population + watersource + purchased + state_classification, data = Data, family= binomial)
+summary(CCR_missingtwoplus)
+
+Modeleddroughtimpact <- glm(SC5e_Drought_Impact ~ carceral_sys + population + watersource + purchased + state_classification, data = Data, family= binomial)
+summary(Modeleddroughtimpact)
+
+Distribution_disrupt <- glm(Distributiondis_any ~ carceral_sys + population + watersource + purchased + state_classification, data = Data, family= binomial)
+summary(Distribution_disrupt)
+
+Sig_dif <- glm(Significant_Deficiencies ~ carceral_sys + population + watersource + purchased + state_classification, data = Data, family= binomial)
+summary(Sig_dif)
+
+Bottledwaterreliance <- glm(Bottled_Water_or_Hauled_Water_Reliance ~ carceral_sys + population + watersource + purchased + state_classification, data = Data, family= binomial)
+summary(Bottledwaterreliance)
+```
+
