@@ -13,6 +13,7 @@ knitr::opts_knit$set(root.dir = "/Users/KristinDobbin/Documents/Projects/R_Proje
 
 library(tidyverse)
 library(gtsummary)
+library(kableExtra)
 ```
 
 
@@ -149,4 +150,3 @@ summary(Sig_dif)
 Bottledwaterreliance <- glm(Bottled_Water_or_Hauled_Water_Reliance ~ carceral_sys + population + watersource + purchased + state_classification, data = Data, family= binomial)
 summary(Bottledwaterreliance)
 ```
-
