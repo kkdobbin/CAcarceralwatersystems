@@ -1,0 +1,1222 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+]{article}
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Final paper results Sept 2},
+  pdfauthor={Kristin Dobbin},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Final paper results Sept 2}
+\author{Kristin Dobbin}
+\date{2025-09-03}
+
+\begin{document}
+\maketitle
+
+\subsection{Data overview}\label{data-overview}
+
+Our data set includes 4260 unique public water systems representing all
+of the active CWS and NTNCWS water systems in the same. Of these water
+systems 2812 are community water systems, 1448 are Non-Transient
+Non-Community systems. The mean population served by these systems is
+9583.4584507.
+
+\subsection{Describing carceral water
+systems}\label{describing-carceral-water-systems}
+
+We classify these systems into three categories: Carceral water systems
+that primarily or exclusively serve carceral facilities; non-exclusive
+carceral water systems that serve one or more carceral facilities in
+addition to other customers and non-carceral systems that do not serve
+any carceral faciltiies. We find that 56 or 1.314554\% are carceral
+water systems. 152 or 3.5680751\% are non-exclusive carceral systems and
+4052 or 95.1173709\% are noncarceral systems.
+
+\begin{tabular}{l|c|c|c}
+\hline
+\textbf{Characteristic} & \makecell[c]{\textbf{carceral\\textit{serving\}water\_system}\ \ \\N = 152} & \makecell[c]{\textbf{carceral\\textit{water\}system}\ \ \\N = 56} & \makecell[c]{\textbf{other\\textit{water\}systems}\ \ \\N = 4,052}\\
+\hline
+pws\_type\_code &  &  & \\
+\hline
+\hspace{1em}CWS & 147 (97\%) & 44 (79\%) & 2,621 (65\%)\\
+\hline
+\hspace{1em}NTNCWS & 5 (3.3\%) & 12 (21\%) & 1,431 (35\%)\\
+\hline
+population\_served\_count & 63,982 (16,057, 137,023) & 533 (100, 3,729) & 180 (66, 694)\\
+\hline
+watersource &  &  & \\
+\hline
+\hspace{1em}GW & 44 (29\%) & 45 (80\%) & 3,291 (81\%)\\
+\hline
+\hspace{1em}SW & 108 (71\%) & 11 (20\%) & 761 (19\%)\\
+\hline
+purchased &  &  & \\
+\hline
+\hspace{1em}Not purchased & 94 (62\%) & 51 (91\%) & 3,643 (90\%)\\
+\hline
+\hspace{1em}Purchased & 58 (38\%) & 5 (8.9\%) & 409 (10\%)\\
+\hline
+HR\_NAME &  &  & \\
+\hline
+\hspace{1em}Central Coast & 9 (6.0\%) & 6 (11\%) & 482 (15\%)\\
+\hline
+\hspace{1em}Colorado River & 4 (2.7\%) & 4 (7.4\%) & 110 (3.4\%)\\
+\hline
+\hspace{1em}North Coast & 6 (4.0\%) & 5 (9.3\%) & 353 (11\%)\\
+\hline
+\hspace{1em}North Lahontan & 4 (2.7\%) & 1 (1.9\%) & 58 (1.8\%)\\
+\hline
+\hspace{1em}Sacramento River & 18 (12\%) & 8 (15\%) & 474 (15\%)\\
+\hline
+\hspace{1em}San Francisco Bay & 15 (10\%) & 1 (1.9\%) & 204 (6.3\%)\\
+\hline
+\hspace{1em}San Joaquin River & 11 (7.3\%) & 7 (13\%) & 529 (16\%)\\
+\hline
+\hspace{1em}South Coast & 67 (45\%) & 9 (17\%) & 354 (11\%)\\
+\hline
+\hspace{1em}South Lahontan & 5 (3.3\%) & 3 (5.6\%) & 228 (7.0\%)\\
+\hline
+\hspace{1em}Tulare Lake & 11 (7.3\%) & 10 (19\%) & 447 (14\%)\\
+\hline
+\hspace{1em}Unknown & 2 & 2 & 813\\
+\hline
+\multicolumn{4}{l}{\rule{0pt}{1em}\textsuperscript{1} n (\%); Median (Q1, Q3)}\\
+\end{tabular}
+
+As you can see above, many of the carceral serving systems rely on
+surface water. Which is interesting. Many of those systems are
+concentrated in the bay area, Sacramento and northern central valley
+areas and southern california whereas exclusive carceral systems are
+fairly evenly spread throughout the state.
+
+\pandocbounded{\includegraphics[keepaspectratio]{/Users/KristinDobbin/Documents/Projects/R_Projects_Active/CAcarceralwatersystems/Docs/Final_paper_results_files/figure-latex/system map-1.pdf}}
+
+\subsection{Outcome (performance) descriptive
+results}\label{outcome-performance-descriptive-results}
+
+Next we can see if these categories of water systems perform differently
+using different performance measures related to water quality,
+accessibility and TMF capacity.
+
+\subsection{GLMs for outcomes with
+controls}\label{glms-for-outcomes-with-controls}
+
+Lastly we can use GLMs to see if any of these relationships are
+stastisticallly significant while holding other driving factors like
+system size constant.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Data}\SpecialCharTok{$}\NormalTok{carceral\_sys }\OtherTok{\textless{}{-}} \FunctionTok{relevel}\NormalTok{(Data}\SpecialCharTok{$}\NormalTok{carceral\_sys, }\AttributeTok{ref =} \StringTok{"other\_water\_systems"}\NormalTok{)}
+
+\NormalTok{MCL\_violations }\OtherTok{\textless{}{-}} \FunctionTok{glm}\NormalTok{(health\_5yr\_no2ndary\_or\_lsl\_binary }\SpecialCharTok{\textasciitilde{}}\NormalTok{ carceral\_sys }\SpecialCharTok{+}\NormalTok{ population\_served\_count }\SpecialCharTok{+}\NormalTok{ watersource }\SpecialCharTok{+}\NormalTok{ purchased }\SpecialCharTok{+}\NormalTok{ pws\_type\_code }\SpecialCharTok{+}\NormalTok{ HR\_NAME, }\AttributeTok{data =}\NormalTok{ Data, }\AttributeTok{family=}\NormalTok{ binomial)}
+\FunctionTok{summary}\NormalTok{(MCL\_violations)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## glm(formula = health_5yr_no2ndary_or_lsl_binary ~ carceral_sys + 
+##     population_served_count + watersource + purchased + pws_type_code + 
+##     HR_NAME, family = binomial, data = Data)
+## 
+## Coefficients:
+##                                             Estimate Std. Error z value
+## (Intercept)                               -1.668e+00  1.292e-01 -12.917
+## carceral_syscarceral_serving_water_system  1.098e-01  3.169e-01   0.347
+## carceral_syscarceral_water_system         -3.303e-01  4.170e-01  -0.792
+## population_served_count                   -4.688e-06  2.581e-06  -1.816
+## watersourceSW                              3.908e-01  1.448e-01   2.700
+## purchasedPurchased                        -1.217e+00  2.435e-01  -4.999
+## pws_type_codeNTNCWS                       -1.303e-01  1.227e-01  -1.062
+## HR_NAMEColorado River                      6.314e-02  2.832e-01   0.223
+## HR_NAMENorth Coast                        -5.435e-01  2.177e-01  -2.497
+## HR_NAMENorth Lahontan                     -5.799e-01  4.483e-01  -1.294
+## HR_NAMESacramento River                   -7.596e-01  2.077e-01  -3.657
+## HR_NAMESan Francisco Bay                  -8.018e-01  3.082e-01  -2.601
+## HR_NAMESan Joaquin River                   4.766e-01  1.629e-01   2.926
+## HR_NAMESouth Coast                        -1.309e-01  2.157e-01  -0.607
+## HR_NAMESouth Lahontan                      1.223e-01  2.202e-01   0.556
+## HR_NAMETulare Lake                         8.724e-01  1.623e-01   5.377
+##                                           Pr(>|z|)    
+## (Intercept)                                < 2e-16 ***
+## carceral_syscarceral_serving_water_system 0.728966    
+## carceral_syscarceral_water_system         0.428387    
+## population_served_count                   0.069315 .  
+## watersourceSW                             0.006944 ** 
+## purchasedPurchased                        5.76e-07 ***
+## pws_type_codeNTNCWS                       0.288260    
+## HR_NAMEColorado River                     0.823566    
+## HR_NAMENorth Coast                        0.012521 *  
+## HR_NAMENorth Lahontan                     0.195779    
+## HR_NAMESacramento River                   0.000255 ***
+## HR_NAMESan Francisco Bay                  0.009289 ** 
+## HR_NAMESan Joaquin River                  0.003437 ** 
+## HR_NAMESouth Coast                        0.543887    
+## HR_NAMESouth Lahontan                     0.578512    
+## HR_NAMETulare Lake                        7.57e-08 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 2974.4  on 3442  degrees of freedom
+## Residual deviance: 2791.6  on 3427  degrees of freedom
+##   (817 observations deleted due to missingness)
+## AIC: 2823.6
+## 
+## Number of Fisher Scoring iterations: 6
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{M\_violations }\OtherTok{\textless{}{-}} \FunctionTok{glm}\NormalTok{(mon\_only\_5yr\_binary }\SpecialCharTok{\textasciitilde{}}\NormalTok{ carceral\_sys }\SpecialCharTok{+}\NormalTok{ population\_served\_count }\SpecialCharTok{+}\NormalTok{ watersource }\SpecialCharTok{+}\NormalTok{ purchased }\SpecialCharTok{+}\NormalTok{ pws\_type\_code }\SpecialCharTok{+}\NormalTok{ HR\_NAME, }\AttributeTok{data =}\NormalTok{ Data, }\AttributeTok{family=}\NormalTok{ binomial)}
+\FunctionTok{summary}\NormalTok{(M\_violations)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## glm(formula = mon_only_5yr_binary ~ carceral_sys + population_served_count + 
+##     watersource + purchased + pws_type_code + HR_NAME, family = binomial, 
+##     data = Data)
+## 
+## Coefficients:
+##                                             Estimate Std. Error z value
+## (Intercept)                               -6.106e-01  9.891e-02  -6.173
+## carceral_syscarceral_serving_water_system -2.030e-01  2.319e-01  -0.875
+## carceral_syscarceral_water_system          2.813e-01  2.840e-01   0.991
+## population_served_count                   -1.941e-06  1.386e-06  -1.401
+## watersourceSW                             -3.500e-01  1.173e-01  -2.984
+## purchasedPurchased                        -2.813e-01  1.532e-01  -1.837
+## pws_type_codeNTNCWS                       -3.061e-01  9.913e-02  -3.088
+## HR_NAMEColorado River                      1.030e+00  2.117e-01   4.866
+## HR_NAMENorth Coast                         1.404e-01  1.473e-01   0.953
+## HR_NAMENorth Lahontan                     -5.225e-01  3.188e-01  -1.639
+## HR_NAMESacramento River                    2.095e-02  1.368e-01   0.153
+## HR_NAMESan Francisco Bay                  -2.670e-01  1.930e-01  -1.384
+## HR_NAMESan Joaquin River                  -1.984e-01  1.362e-01  -1.456
+## HR_NAMESouth Coast                         2.030e-01  1.524e-01   1.333
+## HR_NAMESouth Lahontan                      4.299e-01  1.647e-01   2.611
+## HR_NAMETulare Lake                        -3.130e-02  1.394e-01  -0.225
+##                                           Pr(>|z|)    
+## (Intercept)                               6.69e-10 ***
+## carceral_syscarceral_serving_water_system  0.38137    
+## carceral_syscarceral_water_system          0.32190    
+## population_served_count                    0.16136    
+## watersourceSW                              0.00284 ** 
+## purchasedPurchased                         0.06628 .  
+## pws_type_codeNTNCWS                        0.00201 ** 
+## HR_NAMEColorado River                     1.14e-06 ***
+## HR_NAMENorth Coast                         0.34051    
+## HR_NAMENorth Lahontan                      0.10128    
+## HR_NAMESacramento River                    0.87833    
+## HR_NAMESan Francisco Bay                   0.16647    
+## HR_NAMESan Joaquin River                   0.14527    
+## HR_NAMESouth Coast                         0.18268    
+## HR_NAMESouth Lahontan                      0.00904 ** 
+## HR_NAMETulare Lake                         0.82234    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 4327.5  on 3442  degrees of freedom
+## Residual deviance: 4224.3  on 3427  degrees of freedom
+##   (817 observations deleted due to missingness)
+## AIC: 4256.3
+## 
+## Number of Fisher Scoring iterations: 5
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{MR\_violations }\OtherTok{\textless{}{-}} \FunctionTok{glm}\NormalTok{(mr\_5yr\_binary }\SpecialCharTok{\textasciitilde{}}\NormalTok{ carceral\_sys }\SpecialCharTok{+}\NormalTok{ population\_served\_count }\SpecialCharTok{+}\NormalTok{ watersource }\SpecialCharTok{+}\NormalTok{ purchased }\SpecialCharTok{+}\NormalTok{ pws\_type\_code }\SpecialCharTok{+}\NormalTok{ HR\_NAME, }\AttributeTok{data =}\NormalTok{ Data, }\AttributeTok{family=}\NormalTok{ binomial)}
+\FunctionTok{summary}\NormalTok{(MR\_violations)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## glm(formula = mr_5yr_binary ~ carceral_sys + population_served_count + 
+##     watersource + purchased + pws_type_code + HR_NAME, family = binomial, 
+##     data = Data)
+## 
+## Coefficients:
+##                                             Estimate Std. Error z value
+## (Intercept)                               -8.650e-02  9.347e-02  -0.925
+## carceral_syscarceral_serving_water_system -1.722e-01  2.126e-01  -0.810
+## carceral_syscarceral_water_system          2.297e-01  2.796e-01   0.822
+## population_served_count                   -2.794e-06  1.357e-06  -2.059
+## watersourceSW                             -4.405e-01  1.084e-01  -4.066
+## purchasedPurchased                        -2.573e-01  1.403e-01  -1.834
+## pws_type_codeNTNCWS                       -2.298e-01  9.099e-02  -2.525
+## HR_NAMEColorado River                      1.083e+00  2.203e-01   4.916
+## HR_NAMENorth Coast                         1.836e-01  1.398e-01   1.314
+## HR_NAMENorth Lahontan                     -6.370e-01  2.901e-01  -2.196
+## HR_NAMESacramento River                    3.320e-01  1.290e-01   2.573
+## HR_NAMESan Francisco Bay                  -3.871e-02  1.722e-01  -0.225
+## HR_NAMESan Joaquin River                  -1.391e-01  1.264e-01  -1.101
+## HR_NAMESouth Coast                         1.345e-01  1.448e-01   0.929
+## HR_NAMESouth Lahontan                      2.576e-01  1.602e-01   1.608
+## HR_NAMETulare Lake                         1.085e-01  1.306e-01   0.831
+##                                           Pr(>|z|)    
+## (Intercept)                                 0.3547    
+## carceral_syscarceral_serving_water_system   0.4181    
+## carceral_syscarceral_water_system           0.4113    
+## population_served_count                     0.0395 *  
+## watersourceSW                             4.79e-05 ***
+## purchasedPurchased                          0.0666 .  
+## pws_type_codeNTNCWS                         0.0116 *  
+## HR_NAMEColorado River                     8.83e-07 ***
+## HR_NAMENorth Coast                          0.1888    
+## HR_NAMENorth Lahontan                       0.0281 *  
+## HR_NAMESacramento River                     0.0101 *  
+## HR_NAMESan Francisco Bay                    0.8221    
+## HR_NAMESan Joaquin River                    0.2710    
+## HR_NAMESouth Coast                          0.3531    
+## HR_NAMESouth Lahontan                       0.1079    
+## HR_NAMETulare Lake                          0.4060    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 4747.0  on 3442  degrees of freedom
+## Residual deviance: 4619.9  on 3427  degrees of freedom
+##   (817 observations deleted due to missingness)
+## AIC: 4651.9
+## 
+## Number of Fisher Scoring iterations: 5
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{NA\_WQ }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(Water\_Quality\_Category\_Score }\SpecialCharTok{\textasciitilde{}}\NormalTok{ carceral\_sys }\SpecialCharTok{+}\NormalTok{ population\_served\_count }\SpecialCharTok{+}\NormalTok{ watersource }\SpecialCharTok{+}\NormalTok{ purchased }\SpecialCharTok{+}\NormalTok{ pws\_type\_code }\SpecialCharTok{+}\NormalTok{ HR\_NAME, }\AttributeTok{data =}\NormalTok{ Data, }\AttributeTok{family=}\NormalTok{ binomial)}
+\FunctionTok{summary}\NormalTok{(NA\_WQ)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = Water_Quality_Category_Score ~ carceral_sys + population_served_count + 
+##     watersource + purchased + pws_type_code + HR_NAME, data = Data, 
+##     family = binomial)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -1.3139 -0.6792 -0.3917  0.5941  5.1570 
+## 
+## Coefficients:
+##                                             Estimate Std. Error t value
+## (Intercept)                                8.427e-01  4.952e-02  17.017
+## carceral_syscarceral_serving_water_system  4.374e-02  1.155e-01   0.379
+## carceral_syscarceral_water_system          3.541e-02  1.522e-01   0.233
+## population_served_count                    2.902e-06  1.546e-06   1.877
+## watersourceSW                             -2.015e-01  5.662e-02  -3.559
+## purchasedPurchased                        -2.474e-01  7.266e-02  -3.405
+## pws_type_codeNTNCWS                        1.656e-02  7.397e-02   0.224
+## HR_NAMEColorado River                      1.354e-01  1.092e-01   1.240
+## HR_NAMENorth Coast                        -4.410e-01  7.641e-02  -5.772
+## HR_NAMENorth Lahontan                     -5.130e-01  1.445e-01  -3.549
+## HR_NAMESacramento River                   -2.997e-01  6.762e-02  -4.432
+## HR_NAMESan Francisco Bay                  -3.064e-01  9.616e-02  -3.186
+## HR_NAMESan Joaquin River                   2.108e-02  6.822e-02   0.309
+## HR_NAMESouth Coast                         1.232e-01  7.537e-02   1.634
+## HR_NAMESouth Lahontan                      6.209e-02  8.549e-02   0.726
+## HR_NAMETulare Lake                         3.522e-01  7.188e-02   4.900
+##                                           Pr(>|t|)    
+## (Intercept)                                < 2e-16 ***
+## carceral_syscarceral_serving_water_system 0.704989    
+## carceral_syscarceral_water_system         0.816102    
+## population_served_count                   0.060647 .  
+## watersourceSW                             0.000378 ***
+## purchasedPurchased                        0.000671 ***
+## pws_type_codeNTNCWS                       0.822814    
+## HR_NAMEColorado River                     0.215000    
+## HR_NAMENorth Coast                        8.69e-09 ***
+## HR_NAMENorth Lahontan                     0.000393 ***
+## HR_NAMESacramento River                   9.67e-06 ***
+## HR_NAMESan Francisco Bay                  0.001458 ** 
+## HR_NAMESan Joaquin River                  0.757285    
+## HR_NAMESouth Coast                        0.102340    
+## HR_NAMESouth Lahontan                     0.467700    
+## HR_NAMETulare Lake                        1.01e-06 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.9985 on 2853 degrees of freedom
+##   (1391 observations deleted due to missingness)
+## Multiple R-squared:  0.07613,    Adjusted R-squared:  0.07127 
+## F-statistic: 15.67 on 15 and 2853 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{NA\_AC }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(Accessibility\_Category\_Score }\SpecialCharTok{\textasciitilde{}}\NormalTok{ carceral\_sys }\SpecialCharTok{+}\NormalTok{ population\_served\_count }\SpecialCharTok{+}\NormalTok{ watersource }\SpecialCharTok{+}\NormalTok{ purchased }\SpecialCharTok{+}\NormalTok{ pws\_type\_code }\SpecialCharTok{+}\NormalTok{ HR\_NAME, }\AttributeTok{data =}\NormalTok{ Data, }\AttributeTok{family=}\NormalTok{ binomial)}
+\FunctionTok{summary}\NormalTok{(NA\_AC)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = Accessibility_Category_Score ~ carceral_sys + population_served_count + 
+##     watersource + purchased + pws_type_code + HR_NAME, data = Data, 
+##     family = binomial)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -1.5043 -0.5529 -0.1180  0.4474  3.4728 
+## 
+## Coefficients:
+##                                             Estimate Std. Error t value
+## (Intercept)                                9.359e-01  3.549e-02  26.375
+## carceral_syscarceral_serving_water_system -4.781e-02  8.279e-02  -0.577
+## carceral_syscarceral_water_system         -9.733e-02  1.091e-01  -0.892
+## population_served_count                   -1.216e-05  1.108e-06 -10.978
+## watersourceSW                              3.469e-02  4.057e-02   0.855
+## purchasedPurchased                        -2.245e-01  5.207e-02  -4.312
+## pws_type_codeNTNCWS                        5.716e-01  5.300e-02  10.784
+## HR_NAMEColorado River                     -8.721e-02  7.825e-02  -1.114
+## HR_NAMENorth Coast                        -6.704e-02  5.476e-02  -1.224
+## HR_NAMENorth Lahontan                     -4.191e-01  1.036e-01  -4.047
+## HR_NAMESacramento River                    3.350e-02  4.846e-02   0.691
+## HR_NAMESan Francisco Bay                  -1.185e-01  6.890e-02  -1.719
+## HR_NAMESan Joaquin River                   1.617e-01  4.888e-02   3.309
+## HR_NAMESouth Coast                        -2.167e-01  5.401e-02  -4.012
+## HR_NAMESouth Lahontan                     -1.633e-01  6.126e-02  -2.665
+## HR_NAMETulare Lake                         4.722e-01  5.151e-02   9.168
+##                                           Pr(>|t|)    
+## (Intercept)                                < 2e-16 ***
+## carceral_syscarceral_serving_water_system 0.563663    
+## carceral_syscarceral_water_system         0.372352    
+## population_served_count                    < 2e-16 ***
+## watersourceSW                             0.392558    
+## purchasedPurchased                        1.67e-05 ***
+## pws_type_codeNTNCWS                        < 2e-16 ***
+## HR_NAMEColorado River                     0.265176    
+## HR_NAMENorth Coast                        0.220919    
+## HR_NAMENorth Lahontan                     5.33e-05 ***
+## HR_NAMESacramento River                   0.489372    
+## HR_NAMESan Francisco Bay                  0.085689 .  
+## HR_NAMESan Joaquin River                  0.000949 ***
+## HR_NAMESouth Coast                        6.17e-05 ***
+## HR_NAMESouth Lahontan                     0.007732 ** 
+## HR_NAMETulare Lake                         < 2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.7155 on 2853 degrees of freedom
+##   (1391 observations deleted due to missingness)
+## Multiple R-squared:  0.2212, Adjusted R-squared:  0.2171 
+## F-statistic: 54.03 on 15 and 2853 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{NA\_TMF }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(TMF\_Capacity\_Category\_Score }\SpecialCharTok{\textasciitilde{}}\NormalTok{ carceral\_sys }\SpecialCharTok{+}\NormalTok{ population\_served\_count }\SpecialCharTok{+}\NormalTok{ watersource }\SpecialCharTok{+}\NormalTok{ purchased }\SpecialCharTok{+}\NormalTok{ pws\_type\_code }\SpecialCharTok{+}\NormalTok{ HR\_NAME, }\AttributeTok{data =}\NormalTok{ Data, }\AttributeTok{family=}\NormalTok{ binomial)}
+\FunctionTok{summary}\NormalTok{(NA\_TMF)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = TMF_Capacity_Category_Score ~ carceral_sys + population_served_count + 
+##     watersource + purchased + pws_type_code + HR_NAME, data = Data, 
+##     family = binomial)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.79161 -0.37214 -0.05872  0.26137  2.16083 
+## 
+## Coefficients:
+##                                             Estimate Std. Error t value
+## (Intercept)                                3.724e-01  2.074e-02  17.957
+## carceral_syscarceral_serving_water_system -1.443e-02  4.838e-02  -0.298
+## carceral_syscarceral_water_system          5.048e-01  6.375e-02   7.918
+## population_served_count                   -3.331e-06  6.474e-07  -5.145
+## watersourceSW                              2.248e-02  2.371e-02   0.948
+## purchasedPurchased                        -1.037e-01  3.043e-02  -3.407
+## pws_type_codeNTNCWS                       -4.044e-01  3.097e-02 -13.057
+## HR_NAMEColorado River                      2.711e-01  4.573e-02   5.928
+## HR_NAMENorth Coast                         3.473e-02  3.200e-02   1.085
+## HR_NAMENorth Lahontan                      1.884e-02  6.052e-02   0.311
+## HR_NAMESacramento River                    8.638e-02  2.832e-02   3.050
+## HR_NAMESan Francisco Bay                   2.553e-02  4.027e-02   0.634
+## HR_NAMESan Joaquin River                   9.493e-02  2.857e-02   3.323
+## HR_NAMESouth Coast                         1.401e-01  3.156e-02   4.439
+## HR_NAMESouth Lahontan                      1.349e-01  3.580e-02   3.767
+## HR_NAMETulare Lake                         1.242e-01  3.010e-02   4.126
+##                                           Pr(>|t|)    
+## (Intercept)                                < 2e-16 ***
+## carceral_syscarceral_serving_water_system 0.765596    
+## carceral_syscarceral_water_system         3.42e-15 ***
+## population_served_count                   2.86e-07 ***
+## watersourceSW                             0.343226    
+## purchasedPurchased                        0.000665 ***
+## pws_type_codeNTNCWS                        < 2e-16 ***
+## HR_NAMEColorado River                     3.43e-09 ***
+## HR_NAMENorth Coast                        0.277878    
+## HR_NAMENorth Lahontan                     0.755593    
+## HR_NAMESacramento River                   0.002306 ** 
+## HR_NAMESan Francisco Bay                  0.526038    
+## HR_NAMESan Joaquin River                  0.000902 ***
+## HR_NAMESouth Coast                        9.39e-06 ***
+## HR_NAMESouth Lahontan                     0.000168 ***
+## HR_NAMETulare Lake                        3.80e-05 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.4181 on 2853 degrees of freedom
+##   (1391 observations deleted due to missingness)
+## Multiple R-squared:  0.1122, Adjusted R-squared:  0.1075 
+## F-statistic: 24.04 on 15 and 2853 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Data}\SpecialCharTok{$}\NormalTok{Failingoratrisk }\OtherTok{\textless{}{-}} \FunctionTok{ifelse}\NormalTok{(Data}\SpecialCharTok{$}\NormalTok{SAFER\_Status }\SpecialCharTok{==} \StringTok{"Failing"} \SpecialCharTok{|}\NormalTok{ Data}\SpecialCharTok{$}\NormalTok{SAFER\_Status }\SpecialCharTok{==} \StringTok{"At{-}Risk"}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{)}
+\NormalTok{Data}\SpecialCharTok{$}\NormalTok{failing }\OtherTok{\textless{}{-}} \FunctionTok{ifelse}\NormalTok{(Data}\SpecialCharTok{$}\NormalTok{SAFER\_Status }\SpecialCharTok{==} \StringTok{"Failing"}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{)}
+
+\NormalTok{Fail\_or\_atrisk }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(Failingoratrisk }\SpecialCharTok{\textasciitilde{}}\NormalTok{ carceral\_sys }\SpecialCharTok{+}\NormalTok{ population\_served\_count }\SpecialCharTok{+}\NormalTok{ watersource }\SpecialCharTok{+}\NormalTok{ purchased }\SpecialCharTok{+}\NormalTok{ pws\_type\_code }\SpecialCharTok{+}\NormalTok{ HR\_NAME, }\AttributeTok{data =}\NormalTok{ Data, }\AttributeTok{family=}\NormalTok{ binomial)}
+\FunctionTok{summary}\NormalTok{(Fail\_or\_atrisk)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = Failingoratrisk ~ carceral_sys + population_served_count + 
+##     watersource + purchased + pws_type_code + HR_NAME, data = Data, 
+##     family = binomial)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -0.6513 -0.3170 -0.2273  0.5389  1.0403 
+## 
+## Coefficients:
+##                                             Estimate Std. Error t value
+## (Intercept)                                3.172e-01  2.218e-02  14.303
+## carceral_syscarceral_serving_water_system  1.994e-02  5.174e-02   0.385
+## carceral_syscarceral_water_system          6.079e-02  6.818e-02   0.892
+## population_served_count                   -3.060e-06  6.924e-07  -4.420
+## watersourceSW                             -7.738e-03  2.536e-02  -0.305
+## purchasedPurchased                        -1.203e-01  3.254e-02  -3.695
+## pws_type_codeNTNCWS                       -1.370e-02  3.313e-02  -0.414
+## HR_NAMEColorado River                      1.359e-01  4.891e-02   2.778
+## HR_NAMENorth Coast                        -7.604e-02  3.422e-02  -2.222
+## HR_NAMENorth Lahontan                     -2.156e-01  6.473e-02  -3.330
+## HR_NAMESacramento River                   -5.740e-02  3.029e-02  -1.895
+## HR_NAMESan Francisco Bay                  -9.728e-02  4.307e-02  -2.259
+## HR_NAMESan Joaquin River                   1.209e-01  3.055e-02   3.959
+## HR_NAMESouth Coast                         3.494e-02  3.375e-02   1.035
+## HR_NAMESouth Lahontan                      5.365e-02  3.829e-02   1.401
+## HR_NAMETulare Lake                         2.734e-01  3.219e-02   8.494
+##                                           Pr(>|t|)    
+## (Intercept)                                < 2e-16 ***
+## carceral_syscarceral_serving_water_system 0.699966    
+## carceral_syscarceral_water_system         0.372710    
+## population_served_count                   1.02e-05 ***
+## watersourceSW                             0.760274    
+## purchasedPurchased                        0.000224 ***
+## pws_type_codeNTNCWS                       0.679147    
+## HR_NAMEColorado River                     0.005502 ** 
+## HR_NAMENorth Coast                        0.026361 *  
+## HR_NAMENorth Lahontan                     0.000878 ***
+## HR_NAMESacramento River                   0.058175 .  
+## HR_NAMESan Francisco Bay                  0.023962 *  
+## HR_NAMESan Joaquin River                  7.72e-05 ***
+## HR_NAMESouth Coast                        0.300665    
+## HR_NAMESouth Lahontan                     0.161245    
+## HR_NAMETulare Lake                         < 2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.4472 on 2853 degrees of freedom
+##   (1391 observations deleted due to missingness)
+## Multiple R-squared:  0.0912, Adjusted R-squared:  0.08642 
+## F-statistic: 19.09 on 15 and 2853 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Fail }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(failing }\SpecialCharTok{\textasciitilde{}}\NormalTok{ carceral\_sys }\SpecialCharTok{+}\NormalTok{ population\_served\_count }\SpecialCharTok{+}\NormalTok{ watersource }\SpecialCharTok{+}\NormalTok{ purchased }\SpecialCharTok{+}\NormalTok{ pws\_type\_code }\SpecialCharTok{+}\NormalTok{ HR\_NAME, }\AttributeTok{data =}\NormalTok{ Data, }\AttributeTok{family=}\NormalTok{ binomial)}
+\FunctionTok{summary}\NormalTok{(Fail)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = failing ~ carceral_sys + population_served_count + 
+##     watersource + purchased + pws_type_code + HR_NAME, data = Data, 
+##     family = binomial)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.29542 -0.16479 -0.09601 -0.05269  0.99672 
+## 
+## Coefficients:
+##                                             Estimate Std. Error t value
+## (Intercept)                                1.156e-01  1.625e-02   7.115
+## carceral_syscarceral_serving_water_system -2.158e-02  3.791e-02  -0.569
+## carceral_syscarceral_water_system         -6.891e-02  4.995e-02  -1.380
+## population_served_count                   -9.873e-07  5.073e-07  -1.946
+## watersourceSW                             -1.885e-02  1.858e-02  -1.015
+## purchasedPurchased                        -6.398e-02  2.384e-02  -2.684
+## pws_type_codeNTNCWS                       -1.789e-02  2.427e-02  -0.737
+## HR_NAMEColorado River                      9.921e-02  3.583e-02   2.769
+## HR_NAMENorth Coast                        -1.932e-02  2.507e-02  -0.770
+## HR_NAMENorth Lahontan                     -6.837e-02  4.742e-02  -1.442
+## HR_NAMESacramento River                   -4.087e-02  2.219e-02  -1.842
+## HR_NAMESan Francisco Bay                  -2.941e-02  3.155e-02  -0.932
+## HR_NAMESan Joaquin River                   6.735e-02  2.238e-02   3.009
+## HR_NAMESouth Coast                         3.567e-02  2.473e-02   1.442
+## HR_NAMESouth Lahontan                      8.843e-02  2.805e-02   3.153
+## HR_NAMETulare Lake                         1.798e-01  2.358e-02   7.625
+##                                           Pr(>|t|)    
+## (Intercept)                               1.41e-12 ***
+## carceral_syscarceral_serving_water_system  0.56929    
+## carceral_syscarceral_water_system          0.16785    
+## population_served_count                    0.05172 .  
+## watersourceSW                              0.31027    
+## purchasedPurchased                         0.00732 ** 
+## pws_type_codeNTNCWS                        0.46118    
+## HR_NAMEColorado River                      0.00566 ** 
+## HR_NAMENorth Coast                         0.44109    
+## HR_NAMENorth Lahontan                      0.14950    
+## HR_NAMESacramento River                    0.06557 .  
+## HR_NAMESan Francisco Bay                   0.35139    
+## HR_NAMESan Joaquin River                   0.00264 ** 
+## HR_NAMESouth Coast                         0.14933    
+## HR_NAMESouth Lahontan                      0.00163 ** 
+## HR_NAMETulare Lake                        3.30e-14 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.3276 on 2853 degrees of freedom
+##   (1391 observations deleted due to missingness)
+## Multiple R-squared:  0.05846,    Adjusted R-squared:  0.05351 
+## F-statistic: 11.81 on 15 and 2853 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{CCR\_anymissing }\OtherTok{\textless{}{-}} \FunctionTok{glm}\NormalTok{(Missing\_ccr\_any }\SpecialCharTok{\textasciitilde{}}\NormalTok{ carceral\_sys }\SpecialCharTok{+}\NormalTok{ population\_served\_count }\SpecialCharTok{+}\NormalTok{ watersource }\SpecialCharTok{+}\NormalTok{ purchased }\SpecialCharTok{+}\NormalTok{ pws\_type\_code }\SpecialCharTok{+}\NormalTok{ HR\_NAME, }\AttributeTok{data =}\NormalTok{ Data, }\AttributeTok{family=}\NormalTok{ binomial)}
+\FunctionTok{summary}\NormalTok{(CCR\_anymissing)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## glm(formula = Missing_ccr_any ~ carceral_sys + population_served_count + 
+##     watersource + purchased + pws_type_code + HR_NAME, family = binomial, 
+##     data = Data)
+## 
+## Coefficients:
+##                                             Estimate Std. Error z value
+## (Intercept)                               -9.361e-01  1.057e-01  -8.855
+## carceral_syscarceral_serving_water_system -2.339e-01  2.454e-01  -0.953
+## carceral_syscarceral_water_system         -1.501e-01  3.210e-01  -0.467
+## population_served_count                   -6.165e-06  1.869e-06  -3.298
+## watersourceSW                             -3.808e-01  1.217e-01  -3.128
+## purchasedPurchased                        -2.827e-01  1.549e-01  -1.825
+## pws_type_codeNTNCWS                       -1.993e-01  1.056e-01  -1.888
+## HR_NAMEColorado River                      1.048e+00  2.147e-01   4.881
+## HR_NAMENorth Coast                         2.113e+00  1.587e-01  13.315
+## HR_NAMENorth Lahontan                      3.007e+00  3.934e-01   7.645
+## HR_NAMESacramento River                    2.290e+00  1.495e-01  15.312
+## HR_NAMESan Francisco Bay                   1.838e+00  1.825e-01  10.072
+## HR_NAMESan Joaquin River                   6.335e-01  1.360e-01   4.657
+## HR_NAMESouth Coast                         6.832e-01  1.570e-01   4.352
+## HR_NAMESouth Lahontan                     -3.668e-01  1.961e-01  -1.870
+## HR_NAMETulare Lake                        -1.152e+00  1.869e-01  -6.167
+##                                           Pr(>|z|)    
+## (Intercept)                                < 2e-16 ***
+## carceral_syscarceral_serving_water_system 0.340613    
+## carceral_syscarceral_water_system         0.640204    
+## population_served_count                   0.000973 ***
+## watersourceSW                             0.001758 ** 
+## purchasedPurchased                        0.068038 .  
+## pws_type_codeNTNCWS                       0.059047 .  
+## HR_NAMEColorado River                     1.06e-06 ***
+## HR_NAMENorth Coast                         < 2e-16 ***
+## HR_NAMENorth Lahontan                     2.09e-14 ***
+## HR_NAMESacramento River                    < 2e-16 ***
+## HR_NAMESan Francisco Bay                   < 2e-16 ***
+## HR_NAMESan Joaquin River                  3.21e-06 ***
+## HR_NAMESouth Coast                        1.35e-05 ***
+## HR_NAMESouth Lahontan                     0.061453 .  
+## HR_NAMETulare Lake                        6.98e-10 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 4690.8  on 3442  degrees of freedom
+## Residual deviance: 3769.6  on 3427  degrees of freedom
+##   (817 observations deleted due to missingness)
+## AIC: 3801.6
+## 
+## Number of Fisher Scoring iterations: 6
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{CCR\_missingtwoplus }\OtherTok{\textless{}{-}} \FunctionTok{glm}\NormalTok{(Missing\_ccr\_twoplus }\SpecialCharTok{\textasciitilde{}}\NormalTok{ carceral\_sys }\SpecialCharTok{+}\NormalTok{ population\_served\_count }\SpecialCharTok{+}\NormalTok{ watersource }\SpecialCharTok{+}\NormalTok{ purchased }\SpecialCharTok{+}\NormalTok{ pws\_type\_code }\SpecialCharTok{+}\NormalTok{ HR\_NAME, }\AttributeTok{data =}\NormalTok{ Data, }\AttributeTok{family=}\NormalTok{ binomial)}
+\FunctionTok{summary}\NormalTok{(CCR\_missingtwoplus)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## glm(formula = Missing_ccr_twoplus ~ carceral_sys + population_served_count + 
+##     watersource + purchased + pws_type_code + HR_NAME, family = binomial, 
+##     data = Data)
+## 
+## Coefficients:
+##                                             Estimate Std. Error z value
+## (Intercept)                               -1.591e+00  1.298e-01 -12.252
+## carceral_syscarceral_serving_water_system -7.261e-01  3.895e-01  -1.864
+## carceral_syscarceral_water_system         -1.374e+00  4.704e-01  -2.921
+## population_served_count                   -3.416e-05  6.134e-06  -5.570
+## watersourceSW                             -2.146e-01  1.306e-01  -1.643
+## purchasedPurchased                        -3.922e-01  1.929e-01  -2.033
+## pws_type_codeNTNCWS                       -2.426e-01  1.142e-01  -2.125
+## HR_NAMEColorado River                      9.760e-01  2.464e-01   3.961
+## HR_NAMENorth Coast                         1.833e+00  1.669e-01  10.979
+## HR_NAMENorth Lahontan                      3.050e+00  3.329e-01   9.161
+## HR_NAMESacramento River                    2.344e+00  1.610e-01  14.560
+## HR_NAMESan Francisco Bay                   1.849e+00  2.007e-01   9.210
+## HR_NAMESan Joaquin River                   8.693e-01  1.598e-01   5.439
+## HR_NAMESouth Coast                         1.927e-01  2.108e-01   0.914
+## HR_NAMESouth Lahontan                     -1.238e+00  3.349e-01  -3.696
+## HR_NAMETulare Lake                        -1.692e+00  3.003e-01  -5.633
+##                                           Pr(>|z|)    
+## (Intercept)                                < 2e-16 ***
+## carceral_syscarceral_serving_water_system 0.062273 .  
+## carceral_syscarceral_water_system         0.003489 ** 
+## population_served_count                   2.55e-08 ***
+## watersourceSW                             0.100405    
+## purchasedPurchased                        0.042059 *  
+## pws_type_codeNTNCWS                       0.033588 *  
+## HR_NAMEColorado River                     7.45e-05 ***
+## HR_NAMENorth Coast                         < 2e-16 ***
+## HR_NAMENorth Lahontan                      < 2e-16 ***
+## HR_NAMESacramento River                    < 2e-16 ***
+## HR_NAMESan Francisco Bay                   < 2e-16 ***
+## HR_NAMESan Joaquin River                  5.37e-08 ***
+## HR_NAMESouth Coast                        0.360510    
+## HR_NAMESouth Lahontan                     0.000219 ***
+## HR_NAMETulare Lake                        1.77e-08 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 4073.5  on 3442  degrees of freedom
+## Residual deviance: 3096.7  on 3427  degrees of freedom
+##   (817 observations deleted due to missingness)
+## AIC: 3128.7
+## 
+## Number of Fisher Scoring iterations: 8
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Modeleddroughtimpact }\OtherTok{\textless{}{-}} \FunctionTok{glm}\NormalTok{(SC5e\_Drought\_Impact }\SpecialCharTok{\textasciitilde{}}\NormalTok{ carceral\_sys }\SpecialCharTok{+}\NormalTok{ population\_served\_count }\SpecialCharTok{+}\NormalTok{ watersource }\SpecialCharTok{+}\NormalTok{ purchased }\SpecialCharTok{+}\NormalTok{ pws\_type\_code }\SpecialCharTok{+}\NormalTok{ HR\_NAME, }\AttributeTok{data =}\NormalTok{ Data, }\AttributeTok{family=}\NormalTok{ binomial)}
+\FunctionTok{summary}\NormalTok{(Modeleddroughtimpact)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## glm(formula = SC5e_Drought_Impact ~ carceral_sys + population_served_count + 
+##     watersource + purchased + pws_type_code + HR_NAME, family = binomial, 
+##     data = Data)
+## 
+## Coefficients:
+##                                             Estimate Std. Error z value
+## (Intercept)                               -3.711e+00  3.276e-01 -11.328
+## carceral_syscarceral_serving_water_system  6.196e-01  6.174e-01   1.003
+## carceral_syscarceral_water_system         -1.632e+01  1.381e+03  -0.012
+## population_served_count                    3.808e-06  3.074e-05   0.124
+## watersourceSW                              1.482e+00  2.077e-01   7.138
+## purchasedPurchased                        -1.173e+00  4.436e-01  -2.644
+## pws_type_codeNTNCWS                       -1.663e+01  4.160e+02  -0.040
+## HR_NAMEColorado River                      8.628e-02  6.787e-01   0.127
+## HR_NAMENorth Coast                         1.050e+00  3.957e-01   2.655
+## HR_NAMENorth Lahontan                     -4.088e-01  1.071e+00  -0.382
+## HR_NAMESacramento River                    1.035e+00  3.703e-01   2.796
+## HR_NAMESan Francisco Bay                  -1.246e-01  6.143e-01  -0.203
+## HR_NAMESan Joaquin River                   1.558e-01  4.268e-01   0.365
+## HR_NAMESouth Coast                        -4.914e-01  6.119e-01  -0.803
+## HR_NAMESouth Lahontan                      4.703e-01  5.062e-01   0.929
+## HR_NAMETulare Lake                         1.179e+00  3.904e-01   3.020
+##                                           Pr(>|z|)    
+## (Intercept)                                < 2e-16 ***
+## carceral_syscarceral_serving_water_system  0.31562    
+## carceral_syscarceral_water_system          0.99057    
+## population_served_count                    0.90142    
+## watersourceSW                             9.48e-13 ***
+## purchasedPurchased                         0.00819 ** 
+## pws_type_codeNTNCWS                        0.96810    
+## HR_NAMEColorado River                      0.89885    
+## HR_NAMENorth Coast                         0.00793 ** 
+## HR_NAMENorth Lahontan                      0.70278    
+## HR_NAMESacramento River                    0.00518 ** 
+## HR_NAMESan Francisco Bay                   0.83931    
+## HR_NAMESan Joaquin River                   0.71498    
+## HR_NAMESouth Coast                         0.42197    
+## HR_NAMESouth Lahontan                      0.35284    
+## HR_NAMETulare Lake                         0.00252 ** 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 1059.99  on 2884  degrees of freedom
+## Residual deviance:  895.03  on 2869  degrees of freedom
+##   (1375 observations deleted due to missingness)
+## AIC: 927.03
+## 
+## Number of Fisher Scoring iterations: 18
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Distribution\_disrupt }\OtherTok{\textless{}{-}} \FunctionTok{glm}\NormalTok{(Distributiondis\_any }\SpecialCharTok{\textasciitilde{}}\NormalTok{ carceral\_sys }\SpecialCharTok{+}\NormalTok{ population\_served\_count }\SpecialCharTok{+}\NormalTok{ watersource }\SpecialCharTok{+}\NormalTok{ purchased }\SpecialCharTok{+}\NormalTok{ pws\_type\_code }\SpecialCharTok{+}\NormalTok{ HR\_NAME, }\AttributeTok{data =}\NormalTok{ Data, }\AttributeTok{family=}\NormalTok{ binomial)}
+\FunctionTok{summary}\NormalTok{(Distribution\_disrupt)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## glm(formula = Distributiondis_any ~ carceral_sys + population_served_count + 
+##     watersource + purchased + pws_type_code + HR_NAME, family = binomial, 
+##     data = Data)
+## 
+## Coefficients:
+##                                             Estimate Std. Error z value
+## (Intercept)                               -1.960e+00  1.582e-01 -12.391
+## carceral_syscarceral_serving_water_system  4.522e-01  4.902e-01   0.922
+## carceral_syscarceral_water_system         -1.856e+00  1.016e+00  -1.827
+## population_served_count                    1.789e-05  9.631e-06   1.857
+## watersourceSW                              5.269e-01  1.658e-01   3.179
+## purchasedPurchased                         5.217e-02  2.315e-01   0.225
+## pws_type_codeNTNCWS                       -1.763e+00  2.765e-01  -6.375
+## HR_NAMEColorado River                     -1.051e-01  3.599e-01  -0.292
+## HR_NAMENorth Coast                         8.014e-02  2.364e-01   0.339
+## HR_NAMENorth Lahontan                     -4.134e-03  4.670e-01  -0.009
+## HR_NAMESacramento River                    9.002e-02  2.115e-01   0.426
+## HR_NAMESan Francisco Bay                   1.844e-01  2.874e-01   0.642
+## HR_NAMESan Joaquin River                   3.116e-02  2.143e-01   0.145
+## HR_NAMESouth Coast                        -1.431e-01  2.570e-01  -0.557
+## HR_NAMESouth Lahontan                     -6.206e-01  3.207e-01  -1.935
+## HR_NAMETulare Lake                        -6.229e-01  2.718e-01  -2.292
+##                                           Pr(>|z|)    
+## (Intercept)                                < 2e-16 ***
+## carceral_syscarceral_serving_water_system  0.35628    
+## carceral_syscarceral_water_system          0.06764 .  
+## population_served_count                    0.06330 .  
+## watersourceSW                              0.00148 ** 
+## purchasedPurchased                         0.82168    
+## pws_type_codeNTNCWS                       1.83e-10 ***
+## HR_NAMEColorado River                      0.77033    
+## HR_NAMENorth Coast                         0.73459    
+## HR_NAMENorth Lahontan                      0.99294    
+## HR_NAMESacramento River                    0.67041    
+## HR_NAMESan Francisco Bay                   0.52118    
+## HR_NAMESan Joaquin River                   0.88440    
+## HR_NAMESouth Coast                         0.57760    
+## HR_NAMESouth Lahontan                      0.05302 .  
+## HR_NAMETulare Lake                         0.02193 *  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 1947.3  on 2847  degrees of freedom
+## Residual deviance: 1824.2  on 2832  degrees of freedom
+##   (1412 observations deleted due to missingness)
+## AIC: 1856.2
+## 
+## Number of Fisher Scoring iterations: 6
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Sig\_dif }\OtherTok{\textless{}{-}} \FunctionTok{glm}\NormalTok{(Significant\_Deficiencies }\SpecialCharTok{\textasciitilde{}}\NormalTok{ carceral\_sys }\SpecialCharTok{+}\NormalTok{ population\_served\_count }\SpecialCharTok{+}\NormalTok{ watersource }\SpecialCharTok{+}\NormalTok{ purchased }\SpecialCharTok{+}\NormalTok{ pws\_type\_code }\SpecialCharTok{+}\NormalTok{ HR\_NAME, }\AttributeTok{data =}\NormalTok{ Data, }\AttributeTok{family=}\NormalTok{ binomial)}
+\FunctionTok{summary}\NormalTok{(Sig\_dif)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## glm(formula = Significant_Deficiencies ~ carceral_sys + population_served_count + 
+##     watersource + purchased + pws_type_code + HR_NAME, family = binomial, 
+##     data = Data)
+## 
+## Coefficients:
+##                                             Estimate Std. Error z value
+## (Intercept)                               -4.106e+00  4.145e-01  -9.906
+## carceral_syscarceral_serving_water_system -1.781e+01  2.768e+03  -0.006
+## carceral_syscarceral_water_system          1.162e+00  7.753e-01   1.499
+## population_served_count                    2.247e-05  1.160e-05   1.937
+## watersourceSW                             -1.675e+00  8.904e-01  -1.881
+## purchasedPurchased                         2.271e-01  8.438e-01   0.269
+## pws_type_codeNTNCWS                       -1.625e+01  1.819e+03  -0.009
+## HR_NAMEColorado River                      7.109e-01  7.211e-01   0.986
+## HR_NAMENorth Coast                        -1.251e+00  1.085e+00  -1.153
+## HR_NAMENorth Lahontan                      1.068e+00  8.363e-01   1.277
+## HR_NAMESacramento River                   -4.447e-01  6.507e-01  -0.683
+## HR_NAMESan Francisco Bay                  -1.693e+01  2.255e+03  -0.008
+## HR_NAMESan Joaquin River                  -1.718e+01  1.347e+03  -0.013
+## HR_NAMESouth Coast                         8.736e-01  5.381e-01   1.624
+## HR_NAMESouth Lahontan                      2.804e-01  6.538e-01   0.429
+## HR_NAMETulare Lake                        -1.727e+01  1.481e+03  -0.012
+##                                           Pr(>|z|)    
+## (Intercept)                                 <2e-16 ***
+## carceral_syscarceral_serving_water_system   0.9949    
+## carceral_syscarceral_water_system           0.1339    
+## population_served_count                     0.0528 .  
+## watersourceSW                               0.0599 .  
+## purchasedPurchased                          0.7878    
+## pws_type_codeNTNCWS                         0.9929    
+## HR_NAMEColorado River                       0.3242    
+## HR_NAMENorth Coast                          0.2488    
+## HR_NAMENorth Lahontan                       0.2015    
+## HR_NAMESacramento River                     0.4943    
+## HR_NAMESan Francisco Bay                    0.9940    
+## HR_NAMESan Joaquin River                    0.9898    
+## HR_NAMESouth Coast                          0.1045    
+## HR_NAMESouth Lahontan                       0.6680    
+## HR_NAMETulare Lake                          0.9907    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 351.38  on 2868  degrees of freedom
+## Residual deviance: 296.24  on 2853  degrees of freedom
+##   (1391 observations deleted due to missingness)
+## AIC: 328.24
+## 
+## Number of Fisher Scoring iterations: 20
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Bottledwaterreliance }\OtherTok{\textless{}{-}} \FunctionTok{glm}\NormalTok{(Bottled\_Water\_or\_Hauled\_Water\_Reliance }\SpecialCharTok{\textasciitilde{}}\NormalTok{ carceral\_sys }\SpecialCharTok{+}\NormalTok{ population\_served\_count }\SpecialCharTok{+}\NormalTok{ watersource }\SpecialCharTok{+}\NormalTok{ purchased }\SpecialCharTok{+}\NormalTok{ pws\_type\_code }\SpecialCharTok{+}\NormalTok{ HR\_NAME, }\AttributeTok{data =}\NormalTok{ Data, }\AttributeTok{family=}\NormalTok{ binomial)}
+\FunctionTok{summary}\NormalTok{(Bottledwaterreliance)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## glm(formula = Bottled_Water_or_Hauled_Water_Reliance ~ carceral_sys + 
+##     population_served_count + watersource + purchased + pws_type_code + 
+##     HR_NAME, family = binomial, data = Data)
+## 
+## Coefficients:
+##                                             Estimate Std. Error z value
+## (Intercept)                               -2.846e+00  2.175e-01 -13.086
+## carceral_syscarceral_serving_water_system -3.453e-01  1.046e+00  -0.330
+## carceral_syscarceral_water_system         -8.595e-01  1.018e+00  -0.844
+## population_served_count                   -7.492e-05  2.562e-05  -2.924
+## watersourceSW                              1.160e-01  2.688e-01   0.431
+## purchasedPurchased                         2.723e-01  3.424e-01   0.795
+## pws_type_codeNTNCWS                        1.137e+00  2.297e-01   4.948
+## HR_NAMEColorado River                      9.713e-02  4.780e-01   0.203
+## HR_NAMENorth Coast                        -4.600e-01  3.596e-01  -1.279
+## HR_NAMENorth Lahontan                     -1.230e+00  1.036e+00  -1.188
+## HR_NAMESacramento River                   -1.956e-01  3.144e-01  -0.622
+## HR_NAMESan Francisco Bay                  -1.113e-01  4.505e-01  -0.247
+## HR_NAMESan Joaquin River                  -1.691e-01  3.038e-01  -0.557
+## HR_NAMESouth Coast                         1.375e-01  3.472e-01   0.396
+## HR_NAMESouth Lahontan                      1.060e-01  3.682e-01   0.288
+## HR_NAMETulare Lake                         4.050e-01  2.855e-01   1.419
+##                                           Pr(>|z|)    
+## (Intercept)                                < 2e-16 ***
+## carceral_syscarceral_serving_water_system  0.74143    
+## carceral_syscarceral_water_system          0.39864    
+## population_served_count                    0.00345 ** 
+## watersourceSW                              0.66619    
+## purchasedPurchased                         0.42646    
+## pws_type_codeNTNCWS                       7.48e-07 ***
+## HR_NAMEColorado River                      0.83897    
+## HR_NAMENorth Coast                         0.20081    
+## HR_NAMENorth Lahontan                      0.23491    
+## HR_NAMESacramento River                    0.53385    
+## HR_NAMESan Francisco Bay                   0.80490    
+## HR_NAMESan Joaquin River                   0.57772    
+## HR_NAMESouth Coast                         0.69200    
+## HR_NAMESouth Lahontan                      0.77349    
+## HR_NAMETulare Lake                         0.15603    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 1200.4  on 2868  degrees of freedom
+## Residual deviance: 1139.1  on 2853  degrees of freedom
+##   (1391 observations deleted due to missingness)
+## AIC: 1171.1
+## 
+## Number of Fisher Scoring iterations: 8
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Last thing, try EPA health and monitoring binary}
+\NormalTok{EPA }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(}\StringTok{"Data/usepa\_df\_for\_analysis.csv"}\NormalTok{)}
+\NormalTok{EPA }\OtherTok{\textless{}{-}}\NormalTok{ EPA[,}\FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{11}\NormalTok{,}\DecValTok{12}\NormalTok{)]}
+\NormalTok{Data }\OtherTok{\textless{}{-}} \FunctionTok{left\_join}\NormalTok{(Data, EPA)}
+
+\NormalTok{MCL\_violations\_epa }\OtherTok{\textless{}{-}} \FunctionTok{glm}\NormalTok{(binary\_viol\_over5yrs\_health }\SpecialCharTok{\textasciitilde{}}\NormalTok{ carceral\_sys }\SpecialCharTok{+}\NormalTok{ population\_served\_count }\SpecialCharTok{+}\NormalTok{ watersource }\SpecialCharTok{+}\NormalTok{ purchased }\SpecialCharTok{+}\NormalTok{ pws\_type\_code }\SpecialCharTok{+}\NormalTok{ HR\_NAME, }\AttributeTok{data =}\NormalTok{ Data, }\AttributeTok{family=}\NormalTok{ binomial)}
+\FunctionTok{summary}\NormalTok{(MCL\_violations\_epa)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## glm(formula = binary_viol_over5yrs_health ~ carceral_sys + population_served_count + 
+##     watersource + purchased + pws_type_code + HR_NAME, family = binomial, 
+##     data = Data)
+## 
+## Coefficients:
+##                                             Estimate Std. Error z value
+## (Intercept)                               -1.792e+00  1.354e-01 -13.232
+## carceral_syscarceral_serving_water_system  1.809e-01  3.472e-01   0.521
+## carceral_syscarceral_water_system         -5.888e-01  5.278e-01  -1.115
+## population_served_count                   -5.802e-06  2.993e-06  -1.939
+## watersourceSW                              6.267e-01  1.556e-01   4.029
+## purchasedPurchased                        -1.514e+00  2.776e-01  -5.454
+## pws_type_codeNTNCWS                       -1.622e-01  1.419e-01  -1.143
+## HR_NAMEColorado River                      7.254e-02  2.921e-01   0.248
+## HR_NAMENorth Coast                        -1.053e+00  2.628e-01  -4.006
+## HR_NAMENorth Lahontan                     -1.657e+00  7.317e-01  -2.264
+## HR_NAMESacramento River                   -9.254e-01  2.256e-01  -4.102
+## HR_NAMESan Francisco Bay                  -5.040e-01  2.913e-01  -1.730
+## HR_NAMESan Joaquin River                  -4.504e-02  1.823e-01  -0.247
+## HR_NAMESouth Coast                        -1.957e-01  2.307e-01  -0.848
+## HR_NAMESouth Lahontan                     -3.367e-02  2.393e-01  -0.141
+## HR_NAMETulare Lake                         4.291e-01  1.765e-01   2.432
+##                                           Pr(>|z|)    
+## (Intercept)                                < 2e-16 ***
+## carceral_syscarceral_serving_water_system   0.6024    
+## carceral_syscarceral_water_system           0.2647    
+## population_served_count                     0.0525 .  
+## watersourceSW                             5.61e-05 ***
+## purchasedPurchased                        4.93e-08 ***
+## pws_type_codeNTNCWS                         0.2529    
+## HR_NAMEColorado River                       0.8038    
+## HR_NAMENorth Coast                        6.19e-05 ***
+## HR_NAMENorth Lahontan                       0.0236 *  
+## HR_NAMESacramento River                   4.09e-05 ***
+## HR_NAMESan Francisco Bay                    0.0836 .  
+## HR_NAMESan Joaquin River                    0.8048    
+## HR_NAMESouth Coast                          0.3962    
+## HR_NAMESouth Lahontan                       0.8881    
+## HR_NAMETulare Lake                          0.0150 *  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 2437.0  on 3442  degrees of freedom
+## Residual deviance: 2315.9  on 3427  degrees of freedom
+##   (817 observations deleted due to missingness)
+## AIC: 2347.9
+## 
+## Number of Fisher Scoring iterations: 6
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{MR\_violations\_epa }\OtherTok{\textless{}{-}} \FunctionTok{glm}\NormalTok{(binary\_viol\_over5yrs\_mon }\SpecialCharTok{\textasciitilde{}}\NormalTok{ carceral\_sys }\SpecialCharTok{+}\NormalTok{ population\_served\_count }\SpecialCharTok{+}\NormalTok{ watersource }\SpecialCharTok{+}\NormalTok{ purchased }\SpecialCharTok{+}\NormalTok{ pws\_type\_code }\SpecialCharTok{+}\NormalTok{ HR\_NAME, }\AttributeTok{data =}\NormalTok{ Data, }\AttributeTok{family=}\NormalTok{ binomial)}
+\FunctionTok{summary}\NormalTok{(MR\_violations\_epa)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## glm(formula = binary_viol_over5yrs_mon ~ carceral_sys + population_served_count + 
+##     watersource + purchased + pws_type_code + HR_NAME, family = binomial, 
+##     data = Data)
+## 
+## Coefficients:
+##                                             Estimate Std. Error z value
+## (Intercept)                               -1.002e+00  1.061e-01  -9.443
+## carceral_syscarceral_serving_water_system -6.732e-02  2.541e-01  -0.265
+## carceral_syscarceral_water_system          2.598e-01  2.997e-01   0.867
+## population_served_count                   -4.130e-06  1.918e-06  -2.153
+## watersourceSW                             -1.337e-01  1.253e-01  -1.067
+## purchasedPurchased                        -3.397e-01  1.662e-01  -2.044
+## pws_type_codeNTNCWS                       -9.648e-02  1.058e-01  -0.912
+## HR_NAMEColorado River                      8.541e-01  2.145e-01   3.981
+## HR_NAMENorth Coast                         2.857e-01  1.539e-01   1.857
+## HR_NAMENorth Lahontan                     -2.909e-01  3.284e-01  -0.886
+## HR_NAMESacramento River                   -1.400e-01  1.495e-01  -0.937
+## HR_NAMESan Francisco Bay                  -1.505e-01  2.034e-01  -0.740
+## HR_NAMESan Joaquin River                  -4.697e-01  1.529e-01  -3.073
+## HR_NAMESouth Coast                         2.755e-01  1.623e-01   1.697
+## HR_NAMESouth Lahontan                      2.769e-01  1.760e-01   1.574
+## HR_NAMETulare Lake                        -1.644e-01  1.518e-01  -1.083
+##                                           Pr(>|z|)    
+## (Intercept)                                < 2e-16 ***
+## carceral_syscarceral_serving_water_system  0.79106    
+## carceral_syscarceral_water_system          0.38612    
+## population_served_count                    0.03129 *  
+## watersourceSW                              0.28601    
+## purchasedPurchased                         0.04095 *  
+## pws_type_codeNTNCWS                        0.36163    
+## HR_NAMEColorado River                     6.87e-05 ***
+## HR_NAMENorth Coast                         0.06334 .  
+## HR_NAMENorth Lahontan                      0.37570    
+## HR_NAMESacramento River                    0.34900    
+## HR_NAMESan Francisco Bay                   0.45941    
+## HR_NAMESan Joaquin River                   0.00212 ** 
+## HR_NAMESouth Coast                         0.08969 .  
+## HR_NAMESouth Lahontan                      0.11552    
+## HR_NAMETulare Lake                         0.27868    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 3839.5  on 3442  degrees of freedom
+## Residual deviance: 3757.9  on 3427  degrees of freedom
+##   (817 observations deleted due to missingness)
+## AIC: 3789.9
+## 
+## Number of Fisher Scoring iterations: 6
+\end{verbatim}
+
+\end{document}
