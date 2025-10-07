@@ -2,6 +2,7 @@
 
 #Load libraries
 library(tidyverse)
+library(sf)
 
 #Read in data and reduce
 CASDWIS <- read_csv("Data/CASDWIS_WaterSystemSummary_20250812.csv")
@@ -19,7 +20,7 @@ System_types <- System_types %>% mutate(across(c(pwsid, carceral_sys), as.factor
 
 Data <- left_join(System_types, CASDWIS)
 
-#Get rid of 42 NA systems no longer in SDWIS (assume closed) #confirm this with Jenny - why so many?
+#Get rid of 42 NA systems no longer in SDWIS (assume closed) 
 Data <- Data %>% filter(!is.na(CASDWIS_SourceType))
 
 #Create variables for source type and whether source purchased or not
@@ -54,7 +55,7 @@ Data$HR_NAME <- as.factor(Data$HR_NAME)
 #Add in additional output measures
 
 #Needs assessment 2025
-NA2025 <- read_csv("Data/2025riskassessment_categorysummarylevels.csv")
+NA2025 <- read_csv("Data/2025riskassessment_categorysummarylevels.csv") #downloaded from the data dashboard September 24th
 NA2025$SAFER_STATUS <- as.factor(NA2025$SAFER_STATUS)
 NA2025$Water_Quality_Risk_Level_Display <- as.factor(NA2025$Water_Quality_Risk_Level_Display)
 NA2025$Accessability_Risk_Level_Display <- as.factor(NA2025$Accessability_Risk_Level_Display)

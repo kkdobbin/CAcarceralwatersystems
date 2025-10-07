@@ -3,6 +3,7 @@ title: "Final paper results Sept 24"
 author: "Kristin Dobbin"
 date: "2025-09-03"
 output:
+  pdf_document: default
   html_document: default
 knit: (function(rmdfile, ...) { rmarkdown::render(rmdfile, output_dir=here::here("Docs"))})
 ---
@@ -32,11 +33,12 @@ Our data set includes `r nrow(Data)` unique public water systems representing al
 We classify these systems into three categories: Carceral water systems that primarily or exclusively serve carceral facilities;  non-exclusive carceral water systems that serve one or more carceral facilities in addition to other customers and non-carceral systems that do not serve any carceral faciltiies. We find that `r sum(Data$carceral_sys == "carceral_water_system")` or `r ((sum(Data$carceral_sys == "carceral_water_system"))/nrow(Data)*100)`% are carceral water systems.  `r sum(Data$carceral_sys == "carceral_serving_water_system")` or `r ((sum(Data$carceral_sys == "carceral_serving_water_system"))/nrow(Data)*100)`% are non-exclusive carceral systems and `r sum(Data$carceral_sys == "other_water_systems")` or `r ((sum(Data$carceral_sys == "other_water_systems"))/nrow(Data)*100)`% are noncarceral systems.
 
 ```{r describing carceral water system characteristics, echo=FALSE, warning=FALSE, message=FALSE}
-System_descriptives <- Data[, c(3,6,8,17,18,19)]
+#System_descriptives <- Data[, c(3,6,8,17,18,19)]
 
-Table <- System_descriptives %>% tbl_summary(by = carceral_sys)
+#Table <- System_descriptives %>% tbl_summary(by = carceral_sys)
 
-kable_Table <- Table %>% as_kable_extra(); kable_Table
+#kable_Table <- Table %>% as_kable_extra(); kable_Table
+
 ```
 
 As you can see above, many of the carceral serving systems rely on surface water. Which is interesting. Many of those systems are concentrated in the bay area, Sacramento and northern central valley areas and southern california whereas exclusive carceral systems are fairly evenly spread throughout the state.
@@ -68,15 +70,25 @@ caCountiesTmp <- tigris::counties(state = 06) %>%
   st_as_sf()
 
 Geodata <- st_as_sf(Geodata, sf_column_name = "Centroid")
+Geodata$carceral_sys <- factor(Geodata$carceral_sys, levels = c("carceral_water_system", "carceral_serving_water_system", "other_water_systems"))
 
 #maps - statewide
 Map <- ggplot() +
   geom_sf(data = caCountiesTmp, fill = "white") +
   geom_sf(mapping = aes(colour = carceral_sys, geometry = Centroid), size = .35, data = Geodata, inherit.aes = FALSE) +
-  scale_color_manual(values = c("carceral_water_system" = "goldenrod1", "other_water_systems" = "azure3", "carceral_serving_water_system" = "hotpink4")) +
+  scale_color_manual(values = c("carceral_water_system" = "goldenrod1", "other_water_systems" = "azure3", "carceral_serving_water_system" = "hotpink4"),
+                     labels = c("carceral_water_system" = "Carceral water system", "other_water_systems" = "Other water system", "carceral_serving_water_system" = "Carceral-serving water system")) +
   labs(color = "System Type") +
-  theme(text = element_text(family = "Helvetica"))
+  theme(text = element_text(family = "Arial"),
+        axis.text.x = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks = element_blank(),
+        rect = element_blank(), 
+        legend.position = c(0.8, 0.8),
+        legend.text = element_text(size=10))
 
+
+ggsave('Figures/Map.png', dpi = 720, bg='#ffffff')
 ```
 
 ```{r system map, echo=FALSE, warning=FALSE, message=FALSE}
@@ -91,11 +103,11 @@ Next we can see if these categories of water systems perform differently using d
 
 ```{r describing performance outcomes by category, echo=FALSE, warning=FALSE, message=FALSE}
 
-Outcomes <- Data[,c(8,9,11,23,24,26,28,37)]
+#Outcomes <- Data[,c(8,9,11,23,24,26,28,37)]
 
-Table2 <- Outcomes %>% tbl_summary(by = carceral_sys, missing = "no")
+#Table2 <- Outcomes %>% tbl_summary(by = carceral_sys, missing = "no")
 
-kable_Table2 <- Table2 %>% as_kable_extra(); kable_Table2
+#kable_Table2 <- Table2 %>% as_kable_extra(); kable_Table2
 ```
 
 ## Chi squared and GLMs for outcomes 
@@ -210,27 +222,51 @@ Geodata_MCL <- Geodata %>% filter(health_5yr_no2ndary_or_lsl_binary == 1)
 Map_MCL <- ggplot() +
   geom_sf(data = caCountiesTmp, fill = "white") +
   geom_sf(mapping = aes(colour = carceral_sys, geometry = Centroid), size = .35, data = Geodata_MCL, inherit.aes = FALSE) +
-  scale_color_manual(values = c("carceral_water_system" = "goldenrod1", "other_water_systems" = "azure3", "carceral_serving_water_system" = "hotpink4")) +
+  scale_color_manual(values = c("carceral_water_system" = "goldenrod1", "other_water_systems" = "azure3", "carceral_serving_water_system" = "hotpink4"),
+                     labels = c("carceral_water_system" = "Carceral water system", "other_water_systems" = "Other water system",
+                                "carceral_serving_water_system" = "Carceral-serving water system")) +
   labs(color = "System Type") +
-  theme(text = element_text(family = "Helvetica")); Map_MCL
+  theme(text = element_text(family = "Arial"),
+        axis.text.x = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks = element_blank(),
+        rect = element_blank(), 
+        legend.position = c(0.8, 0.8),
+        legend.text = element_text(size=10))
 
 Geodata_MON <- Geodata %>% filter(mon_only_5yr_binary == 1)
 
 Map_MON <- ggplot() +
   geom_sf(data = caCountiesTmp, fill = "white") +
   geom_sf(mapping = aes(colour = carceral_sys, geometry = Centroid), size = .35, data = Geodata_MCL, inherit.aes = FALSE) +
-  scale_color_manual(values = c("carceral_water_system" = "goldenrod1", "other_water_systems" = "azure3", "carceral_serving_water_system" = "hotpink4")) +
+  scale_color_manual(values = c("carceral_water_system" = "goldenrod1", "other_water_systems" = "azure3", "carceral_serving_water_system" = "hotpink4"),
+                     labels = c("carceral_water_system" = "Carceral water system", "other_water_systems" = "Other water system",
+                                "carceral_serving_water_system" = "Carceral-serving water system")) +
   labs(color = "System Type") +
-  theme(text = element_text(family = "Helvetica")); Map_MON
+  theme(text = element_text(family = "Arial"),
+        axis.text.x = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks = element_blank(),
+        rect = element_blank(), 
+        legend.position = c(0.8, 0.8),
+        legend.text = element_text(size=10))
 
 Geodata_QR <- Geodata %>% filter(Water_Quality_Risk_Level_Display == "High to medium risk")
 
 Map_QR <- ggplot() +
   geom_sf(data = caCountiesTmp, fill = "white") +
   geom_sf(mapping = aes(colour = carceral_sys, geometry = Centroid), size = .35, data = Geodata_QR, inherit.aes = FALSE) +
-  scale_color_manual(values = c("carceral_water_system" = "goldenrod1", "other_water_systems" = "azure3", "carceral_serving_water_system" = "hotpink4")) +
+  scale_color_manual(values = c("carceral_water_system" = "goldenrod1", "other_water_systems" = "azure3", "carceral_serving_water_system" = "hotpink4"),
+                     labels = c("carceral_water_system" = "Carceral water system", "other_water_systems" = "Other water system",
+                                "carceral_serving_water_system" = "Carceral-serving water system")) +
   labs(color = "System Type") +
-  theme(text = element_text(family = "Helvetica")); Map_QR
+  theme(text = element_text(family = "Arial"),
+        axis.text.x = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks = element_blank(),
+        rect = element_blank(), 
+        legend.position = c(0.8, 0.8),
+        legend.text = element_text(size=10))
 
 
 Geodata_AR <- Geodata %>% filter(Accessability_Risk_Level_Display == "High to medium risk")
@@ -238,27 +274,55 @@ Geodata_AR <- Geodata %>% filter(Accessability_Risk_Level_Display == "High to me
 Map_AR <- ggplot() +
   geom_sf(data = caCountiesTmp, fill = "white") +
   geom_sf(mapping = aes(colour = carceral_sys, geometry = Centroid), size = .35, data = Geodata_AR, inherit.aes = FALSE) +
-  scale_color_manual(values = c("carceral_water_system" = "goldenrod1", "other_water_systems" = "azure3", "carceral_serving_water_system" = "hotpink4")) +
+  scale_color_manual(values = c("carceral_water_system" = "goldenrod1", "other_water_systems" = "azure3", "carceral_serving_water_system" = "hotpink4"),
+                     labels = c("carceral_water_system" = "Carceral water system", "other_water_systems" = "Other water system",
+                                "carceral_serving_water_system" = "Carceral-serving water system")) +
   labs(color = "System Type") +
-  theme(text = element_text(family = "Helvetica")); Map_AR
+  theme(text = element_text(family = "Arial"),
+        axis.text.x = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks = element_blank(),
+        rect = element_blank(), 
+        legend.position = c(0.8, 0.8),
+        legend.text = element_text(size=10))
 
 Geodata_TMFR <- Geodata %>% filter(TMF_Capacity_Risk_Level_Display == "High to medium risk")
 
 Map_TMFR <- ggplot() +
   geom_sf(data = caCountiesTmp, fill = "white") +
   geom_sf(mapping = aes(colour = carceral_sys, geometry = Centroid), size = .35, data = Geodata_TMFR, inherit.aes = FALSE) +
-  scale_color_manual(values = c("carceral_water_system" = "goldenrod1", "other_water_systems" = "azure3", "carceral_serving_water_system" = "hotpink4")) +
+  scale_color_manual(values = c("carceral_water_system" = "goldenrod1", "other_water_systems" = "azure3", "carceral_serving_water_system" = "hotpink4"),
+                     labels = c("carceral_water_system" = "Carceral water system", "other_water_systems" = "Other water system",
+                                "carceral_serving_water_system" = "Carceral-serving water system")) +
   labs(color = "System Type") +
-  theme(text = element_text(family = "Helvetica")); Map_TMFR
+  theme(text = element_text(family = "Arial"),
+        axis.text.x = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks = element_blank(),
+        rect = element_blank(), 
+        legend.position = c(0.8, 0.8),
+        legend.text = element_text(size=10))
 
 Geodata_STATUS <- Geodata %>% filter(SAFER_STATUS == "Failing" | SAFER_STATUS == "At-Risk")
 
 Map_STATUS <- ggplot() +
   geom_sf(data = caCountiesTmp, fill = "white") +
   geom_sf(mapping = aes(colour = carceral_sys, geometry = Centroid), size = .35, data = Geodata_STATUS, inherit.aes = FALSE) +
-  scale_color_manual(values = c("carceral_water_system" = "goldenrod1", "other_water_systems" = "azure3", "carceral_serving_water_system" = "hotpink4")) +
+  scale_color_manual(values = c("carceral_water_system" = "goldenrod1", "other_water_systems" = "azure3", "carceral_serving_water_system" = "hotpink4"),
+                     labels = c("carceral_water_system" = "Carceral water system", "other_water_systems" = "Other water system",
+                                "carceral_serving_water_system" = "Carceral-serving water system")) +
   labs(color = "System Type") +
-  theme(text = element_text(family = "Helvetica")); Map_STATUS
+  theme(text = element_text(family = "Arial"),
+        axis.text.x = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks = element_blank(),
+        rect = element_blank(), 
+        legend.position = c(0.8, 0.8),
+        legend.text = element_text(size=10))
 
+
+library(ggpubr)
+Appendixplots <- ggarrange(Map_MCL, Map_MON, Map_QR, Map_AR, Map_TMFR, Map_STATUS,nrow = 3, ncol = 2, common.legend = TRUE, legend = "right", labels = "auto")
+ggsave('Figures/Appendixplots.png', dpi = 720, width = 7.5, height = 10, bg='#ffffff')
 ```
 
