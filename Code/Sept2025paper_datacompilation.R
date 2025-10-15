@@ -11,17 +11,22 @@ System_types <- System_types[,c(2,13:19,10,5,12,7,6,11)]
 
 #Abbreviate data and change column names then join
 CASDWIS <- CASDWIS %>% rename(pwsid = 'Water System No.')
-CASDWIS <- CASDWIS[,c(1,6,7)]
+CASDWIS <- CASDWIS[,c(1,3,6,7)]
 CASDWIS <- CASDWIS %>% rename(CASDWIS_County = 'Principal County Served')
 CASDWIS <- CASDWIS %>% rename(CASDWIS_SourceType = 'Primary Source Water Type')
 CASDWIS <- CASDWIS %>% mutate(across(c(pwsid, CASDWIS_County, CASDWIS_SourceType), as.factor))
+CASDWIS <- CASDWIS %>% rename(CASDWIS_Type = 'Type')
 
 System_types <- System_types %>% mutate(across(c(pwsid, carceral_sys), as.factor))
 
 Data <- left_join(System_types, CASDWIS)
 
+#switch type to state classification, get rid of any that aren't NTNC and CWS ######
+
 #Get rid of 42 NA systems no longer in SDWIS (assume closed) 
 Data <- Data %>% filter(!is.na(CASDWIS_SourceType))
+
+#Change carceral system type on two more system #######
 
 #Create variables for source type and whether source purchased or not
 Data$watersource <- as.factor(ifelse(Data$CASDWIS_SourceType == "GU" | Data$CASDWIS_SourceType == "GUP" |
@@ -31,6 +36,11 @@ Data$purchased <- as.factor(ifelse(Data$CASDWIS_SourceType == "GUP" | Data$CASDW
                                      Data$CASDWIS_SourceType == "SWP", "Purchased", "Not purchased"))
 
 Data$pws_type_code <- as.factor(Data$pws_type_code)
+Data$CASDWIS_Type <- as.factor(Data$CASDWIS_Type)
+
+#Remove NC system types (state designation)
+Data <- Data %>% filter(CASDWIS_Type != "NC")
+Data$pwsid <- droplevels(Data$pwsid) #Make sure all unique systems
 
 #create variable for hydro region
 Systemboundarypolygons <- st_read("Data/California_Drinking_Water_System_Area_Boundaries.geojson") #From Jenny 072325
@@ -51,6 +61,7 @@ majority_overlap_join <- st_drop_geometry(majority_overlap_join) #get rid of spa
 
 Data <- left_join(Data, majority_overlap_join, by = c("pwsid" = "SABL_PWSID"))
 Data$HR_NAME <- as.factor(Data$HR_NAME)
+summary(Data$HR_NAME) #811 don't have boundaires so are NA
 
 #Add in additional output measures
 
