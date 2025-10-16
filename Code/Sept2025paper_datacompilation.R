@@ -21,12 +21,10 @@ System_types <- System_types %>% mutate(across(c(pwsid, carceral_sys), as.factor
 
 Data <- left_join(System_types, CASDWIS)
 
-#switch type to state classification, get rid of any that aren't NTNC and CWS ######
 
 #Get rid of 42 NA systems no longer in SDWIS (assume closed) 
 Data <- Data %>% filter(!is.na(CASDWIS_SourceType))
 
-#Change carceral system type on two more system #######
 
 #Create variables for source type and whether source purchased or not
 Data$watersource <- as.factor(ifelse(Data$CASDWIS_SourceType == "GU" | Data$CASDWIS_SourceType == "GUP" |
@@ -41,6 +39,15 @@ Data$CASDWIS_Type <- as.factor(Data$CASDWIS_Type)
 #Remove NC system types (state designation)
 Data <- Data %>% filter(CASDWIS_Type != "NC")
 Data$pwsid <- droplevels(Data$pwsid) #Make sure all unique systems
+
+#Change carceral system type on two more system #######
+Filter <- Data %>% filter(CASDWIS_Type == "NTNC") %>% filter(carceral_sys == "carceral_serving_water_system")
+summary(Data$carceral_sys)
+Data$carceral_sys[Data$pwsid == "CA5210800"] <- "carceral_water_system"
+Data$carceral_sys[Data$pwsid == "CA5210801"] <- "carceral_water_system"
+summary(Data$carceral_sys)
+Filter <- Data %>% filter(CASDWIS_Type == "NTNC") %>% filter(carceral_sys == "carceral_serving_water_system")
+summary(Data$carceral_sys) #Checking that it worked, it did
 
 #create variable for hydro region
 Systemboundarypolygons <- st_read("Data/California_Drinking_Water_System_Area_Boundaries.geojson") #From Jenny 072325
