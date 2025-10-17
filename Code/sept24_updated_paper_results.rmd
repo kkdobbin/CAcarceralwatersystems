@@ -26,14 +26,14 @@ Data$Missing_ccr_twoplus <- as.factor(ifelse(Data$n_ccr_missing >= 2, "Yes", "No
 
 ## Data overview
 
-Our data set includes `r nrow(Data)` unique public water systems representing all of the active CWS and NTNCWS water systems in the same. Of these water systems `r sum(Data$pws_type_code == "CWS")` are community water systems, `r sum(Data$pws_type_code == "NTNCWS")` are Non-Transient Non-Community systems. The mean population served by these systems is `r mean(Data$population_served_count)`. 
+Our data set includes `r nrow(Data)` unique public water systems representing all of the active CWS and NTNCWS water systems in the same. Of these water systems `r sum(Data$CASDWIS_Type == "C")` are community water systems, `r sum(Data$CASDWIS_Type == "NTNC")` are Non-Transient Non-Community systems. The mean population served by these systems is `r mean(Data$population_served_count)`. 
 
 ## Describing carceral water systems
 
 We classify these systems into three categories: Carceral water systems that primarily or exclusively serve carceral facilities;  non-exclusive carceral water systems that serve one or more carceral facilities in addition to other customers and non-carceral systems that do not serve any carceral faciltiies. We find that `r sum(Data$carceral_sys == "carceral_water_system")` or `r ((sum(Data$carceral_sys == "carceral_water_system"))/nrow(Data)*100)`% are carceral water systems.  `r sum(Data$carceral_sys == "carceral_serving_water_system")` or `r ((sum(Data$carceral_sys == "carceral_serving_water_system"))/nrow(Data)*100)`% are non-exclusive carceral systems and `r sum(Data$carceral_sys == "other_water_systems")` or `r ((sum(Data$carceral_sys == "other_water_systems"))/nrow(Data)*100)`% are noncarceral systems.
 
 ```{r describing carceral water system characteristics, echo=FALSE, warning=FALSE, message=FALSE}
-#System_descriptives <- Data[, c(3,6,8,17,18,19)]
+System_descriptives <- Data[, c(6,8,15,18,19,20)]
 
 #Table <- System_descriptives %>% tbl_summary(by = carceral_sys)
 
@@ -103,7 +103,7 @@ Next we can see if these categories of water systems perform differently using d
 
 ```{r describing performance outcomes by category, echo=FALSE, warning=FALSE, message=FALSE}
 
-#Outcomes <- Data[,c(8,9,11,23,24,26,28,37)]
+Outcomes <- Data[,c(8,9,11,24,25,27,29,38)]
 
 #Table2 <- Outcomes %>% tbl_summary(by = carceral_sys, missing = "no")
 
@@ -198,7 +198,7 @@ tmfr$Outcome <- "Technical, Managerial Financial risk level"
 tmfr <- tmfr %>% relocate(Outcome, .before = group1)
 
 status <- pairwise.chisq.test(Outcomes_notassessedremoved$failingoratrisk, Outcomes_notassessedremoved$carceral_sys)
-status$Outcome <- "Risk assessment status"
+status$Outcome <- "Designated failing or at-risk"
 status <- status %>% relocate(Outcome, .before = group1)
 
 ccr <- pairwise.chisq.test(Outcomes_notassessedremoved$Missing_ccr_any, Outcomes_notassessedremoved$carceral_sys)
