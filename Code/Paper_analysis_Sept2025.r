@@ -84,19 +84,16 @@ kable_Table2 <- Table2 %>% as_kable_extra(); kable_Table2
 
 #Run Chi-squared tests for outcomes
 MCL <- xtabs(~ health_5yr_no2ndary_or_lsl_binary + carceral_sys , data = Data)
-chisq.test(MCL, correct = FALSE) #no sign dif between any groups
+chisq.test(MCL, correct = FALSE) #No sig differences between any groups
+p.adjust(0.2046, method = "bonferroni", n = 7) #adjusted p value
 
 MON <- xtabs(~ mon_only_5yr_binary + carceral_sys , data = Data); MON
-chisq.test(MON, correct = FALSE) #sig p=0.01163
-chisq.test(MON[,c(2,1)]) #carceral serving and carceral sig different p=0.008
-chisq.test(MON[,c(2,3)]) # carceral and other not sig (p=0.1342)
-chisq.test(MON[,c(1,3)]) #carceral serving and other sig different p=0.01793
+chisq.test(MON, correct = FALSE) #sig 
+p.adjust(0.00359, method = "bonferroni", n = 7) #adjusted p value
 
 CCR <- xtabs(~ Missing_ccr_any + carceral_sys , data = Data); CCR
-chisq.test(CCR, correct = FALSE) # Sig differences p<0.001
-chisq.test(CCR[,c(2,1)]) # Carceral serving and carceral not different
-chisq.test(CCR[,c(2,3)]) # Carceral and other systems not different
-chisq.test(CCR[,c(1,3)]) #carceral serving and other systems sig dif p <0.001
+chisq.test(CCR, correct = FALSE) # Sig differences 
+p.adjust(2.445e-05, method = "bonferroni", n = 7) #adjusted p value
 
 #create dataset with NAs (not asssessed) removed to do the same for needs assessment data
 Data_notassessedremoved <- Data
@@ -109,49 +106,34 @@ Outcomes_notassessedremoved <- na.omit(Outcomes_notassessedremoved)
 Outcomes_notassessedremoved <- droplevels(Outcomes_notassessedremoved)
 
 QR <- xtabs(~ Water_Quality_Risk_Level_Display + carceral_sys , data = Outcomes_notassessedremoved); QR
-chisq.test(QR, correct = FALSE) # not sig different p=0.4513
-chisq.test(QR[,c(2,1)]) # not sig p=0.62
-chisq.test(QR[,c(2,3)]) # not sig p=0.3091
-chisq.test(QR[,c(1,3)]) #not sig p=0.7328
+chisq.test(QR, correct = FALSE) # not sig different 
+p.adjust(0.4525, method = "bonferroni", n = 7) #adjusted p value
 
 AR <- xtabs(~ Accessability_Risk_Level_Display + carceral_sys , data = Outcomes_notassessedremoved); AR
 chisq.test(AR, correct = FALSE) # there are sig differneces, p<0.001
-chisq.test(AR[,c(2,1)]) #Carceral serving and carceral sig different p<0.001
-chisq.test(AR[,c(2,3)]) # carceral and other not sig different p=0.99
-chisq.test(AR[,c(1,3)]) #carceral serving and other sig p<0.01
+p.adjust(2.212e-11, method = "bonferroni", n = 7) #adjusted p value
 
 TMFR <- xtabs(~ TMF_Capacity_Risk_Level_Display + carceral_sys , data = Outcomes_notassessedremoved); TMFR
 chisq.test(TMFR, correct = FALSE) # there are sig differneces, p<0.001
-chisq.test(TMFR[,c(2,1)]) #Carceral serving and carceral sig different p<0.001
-chisq.test(TMFR[,c(2,3)]) # carceral and other are sig different p<0.01
-chisq.test(TMFR[,c(1,3)]) #carceral serving and other not sig p=0.1519
+p.adjust(2.2e-16, method = "bonferroni", n = 7) #adjusted p value
 
 Outcomes_notassessedremoved$failingoratrisk <- as.factor(ifelse(Outcomes_notassessedremoved$SAFER_STATUS == "At-Risk" | Outcomes_notassessedremoved$SAFER_STATUS == "Failing", "Yes", "No"))
 
 FAILORRISK <- xtabs(~ failingoratrisk + carceral_sys , data = Outcomes_notassessedremoved); FAILORRISK
 chisq.test(FAILORRISK, correct = FALSE) # sig difference p=0.02
-chisq.test(FAILORRISK[,c(2,1)]) #Carceral serving and carceral sig different p=0.013
-chisq.test(FAILORRISK[,c(2,3)]) # carceral and other are not sig different p=0.1584
-chisq.test(FAILORRISK[,c(1,3)]) #carceral serving and other  sig different p=0.032
-
-STATUS <- xtabs(~ SAFER_STATUS + carceral_sys , data = Outcomes_notassessedremoved); STATUS
-chisq.test(STATUS, correct = FALSE) # there are sig differneces, p=0.00364
-chisq.test(STATUS[,c(2,1)]) #Carceral serving and carceral sig different p=0.01139
-chisq.test(STATUS[,c(2,3)]) # carceral and other are sig different p=004117
-chisq.test(STATUS[,c(1,3)]) #carceral serving and other not sig different p=0.1166
-
+p.adjust(0.02107, method = "bonferroni", n = 7) #adjusted p value 
 
 #Make a pairwise chi-squared table for paper
 library(jgsbook)
-mcl <- pairwise.chisq.test(Outcomes_notassessedremoved$health_5yr_no2ndary_or_lsl_binary, Outcomes_notassessedremoved$carceral_sys)
+mcl <- pairwise.chisq.test(Data$health_5yr_no2ndary_or_lsl_binary, Data$carceral_sys)
 mcl$Outcome <- "One or more health-based violation 2020-2024"
 mcl <- mcl %>% relocate(Outcome, .before = group1)
 
-mon <- pairwise.chisq.test(Outcomes_notassessedremoved$mon_only_5yr_binary, Outcomes_notassessedremoved$carceral_sys)
+mon <- pairwise.chisq.test(Data$mon_only_5yr_binary, Data$carceral_sys)
 mon$Outcome <- "One or more monitoring violation 2020-2024"
 mon <- mon %>% relocate(Outcome, .before = group1)
 
-qr <- pairwise.chisq.test(Outcomes_notassessedremoved$Water_Quality_Risk_Level_Display, Outcomes_notassessedremoved$carceral_sys)
+qr <- pairwise.chisq.test(Data$Water_Quality_Risk_Level_Display, Data$carceral_sys)
 qr$Outcome <- "Water quality risk level"
 qr <- qr %>% relocate(Outcome, .before = group1)
 
@@ -183,6 +165,7 @@ pairwise_rounded <- data.frame(lapply(pairwise, function(x) {
   }
 }))
 
+#alternate way to do pairwise tests if wanting to change to manual - chisq.test(FAILORRISK[,c(1,3)])
 
 # Supplemental Figure 1 ---------------------------------------------------
 
