@@ -178,7 +178,7 @@ Map_MCL <- ggplot() +
   geom_sf(mapping = aes(colour = carceral_sys, geometry = Centroid), size = .35, data = Geodata_MCL, inherit.aes = FALSE) +
   scale_color_manual(values = c("carceral_water_system" = "goldenrod1", "other_water_systems" = "azure3", "carceral_serving_water_system" = "hotpink4"),
                      labels = c("carceral_water_system" = "Carceral water system", "other_water_systems" = "Other water system",
-                                "carceral_serving_water_system" = "Carceral-serving water system")) +
+                                "carceral_serving_water_system" = "Partially carceral-serving water system")) +
   labs(color = "System Type") +
   theme(text = element_text(family = "Arial"),
         axis.text.x = element_blank(),
@@ -195,7 +195,7 @@ Map_MON <- ggplot() +
   geom_sf(mapping = aes(colour = carceral_sys, geometry = Centroid), size = .35, data = Geodata_MCL, inherit.aes = FALSE) +
   scale_color_manual(values = c("carceral_water_system" = "goldenrod1", "other_water_systems" = "azure3", "carceral_serving_water_system" = "hotpink4"),
                      labels = c("carceral_water_system" = "Carceral water system", "other_water_systems" = "Other water system",
-                                "carceral_serving_water_system" = "Carceral-serving water system")) +
+                                "carceral_serving_water_system" = "Partially carceral-serving water system")) +
   labs(color = "System Type") +
   theme(text = element_text(family = "Arial"),
         axis.text.x = element_blank(),
@@ -212,7 +212,7 @@ Map_QR <- ggplot() +
   geom_sf(mapping = aes(colour = carceral_sys, geometry = Centroid), size = .35, data = Geodata_QR, inherit.aes = FALSE) +
   scale_color_manual(values = c("carceral_water_system" = "goldenrod1", "other_water_systems" = "azure3", "carceral_serving_water_system" = "hotpink4"),
                      labels = c("carceral_water_system" = "Carceral water system", "other_water_systems" = "Other water system",
-                                "carceral_serving_water_system" = "Carceral-serving water system")) +
+                                "carceral_serving_water_system" = "Partially carceral-serving water system")) +
   labs(color = "System Type") +
   theme(text = element_text(family = "Arial"),
         axis.text.x = element_blank(),
@@ -230,7 +230,7 @@ Map_AR <- ggplot() +
   geom_sf(mapping = aes(colour = carceral_sys, geometry = Centroid), size = .35, data = Geodata_AR, inherit.aes = FALSE) +
   scale_color_manual(values = c("carceral_water_system" = "goldenrod1", "other_water_systems" = "azure3", "carceral_serving_water_system" = "hotpink4"),
                      labels = c("carceral_water_system" = "Carceral water system", "other_water_systems" = "Other water system",
-                                "carceral_serving_water_system" = "Carceral-serving water system")) +
+                                "carceral_serving_water_system" = "Partially carceral-serving water system")) +
   labs(color = "System Type") +
   theme(text = element_text(family = "Arial"),
         axis.text.x = element_blank(),
@@ -247,7 +247,7 @@ Map_TMFR <- ggplot() +
   geom_sf(mapping = aes(colour = carceral_sys, geometry = Centroid), size = .35, data = Geodata_TMFR, inherit.aes = FALSE) +
   scale_color_manual(values = c("carceral_water_system" = "goldenrod1", "other_water_systems" = "azure3", "carceral_serving_water_system" = "hotpink4"),
                      labels = c("carceral_water_system" = "Carceral water system", "other_water_systems" = "Other water system",
-                                "carceral_serving_water_system" = "Carceral-serving water system")) +
+                                "carceral_serving_water_system" = "Partially carceral-serving water system")) +
   labs(color = "System Type") +
   theme(text = element_text(family = "Arial"),
         axis.text.x = element_blank(),
@@ -264,7 +264,7 @@ Map_STATUS <- ggplot() +
   geom_sf(mapping = aes(colour = carceral_sys, geometry = Centroid), size = .35, data = Geodata_STATUS, inherit.aes = FALSE) +
   scale_color_manual(values = c("carceral_water_system" = "goldenrod1", "other_water_systems" = "azure3", "carceral_serving_water_system" = "hotpink4"),
                      labels = c("carceral_water_system" = "Carceral water system", "other_water_systems" = "Other water system",
-                                "carceral_serving_water_system" = "Carceral-serving water system")) +
+                                "carceral_serving_water_system" = "Partially carceral-serving water system")) +
   labs(color = "System Type") +
   theme(text = element_text(family = "Arial"),
         axis.text.x = element_blank(),
