@@ -58,3 +58,11 @@ Final_largeurban <- rbind(Notzero_largeurban, Zero_largeurban)
 
 Final_largeurban$Remote_largeurban <- ifelse(Final_largeurban$NN_distance_miles_largeurban>5, "Yes", "No") 
 
+Final_largeurban2 <- st_drop_geometry(Final_largeurban)
+
+Final2 <- st_drop_geometry(Final)
+
+Final_combined <- left_join(Final_largeurban2, Final2, by = "SABL_PWSID")
+
+write.csv(Final_combined, file = "Data/Remoteness.csv")
+
