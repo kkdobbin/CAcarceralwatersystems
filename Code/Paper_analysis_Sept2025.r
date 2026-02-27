@@ -278,3 +278,7 @@ Map_STATUS <- ggplot() +
 library(ggpubr)
 Appendixplots <- ggarrange(Map_MCL, Map_MON, Map_QR, Map_AR, Map_TMFR, Map_STATUS,nrow = 3, ncol = 2, common.legend = TRUE, legend = "right", labels = "auto")
 ggsave('Figures/Appendixplots.png', dpi = 720, width = 7.5, height = 10, bg='#ffffff')
+
+AppendixplotsB <- ggarrange(Map_MCL, Map_MON, Map_QR, Map_AR, Map_TMFR, Map_STATUS, nrow = 2, ncol = 3, common.legend = TRUE, legend = "none", labels = "auto", align='hv', hjust=-4.5, vjust=3)
+ggsave('Figures/Appendixplots_nolegend.png', dpi = 720, width = 8.5, height = 10, bg='#ffffff')
+
