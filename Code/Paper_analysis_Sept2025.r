@@ -1,4 +1,5 @@
 #Analysis script by Kristin Dobbin
+#Overview: This script provides the cope for Figure 1, Table 1, Table 2, Chi-squared tests and the supplemental figures. The only input data is the compiled data file "Fullpaperdata_Sept24.csv"
 
 #Load libraries
 library(tidyverse)
@@ -165,7 +166,6 @@ pairwise_rounded <- data.frame(lapply(pairwise, function(x) {
   }
 }))
 
-#alternate way to do pairwise tests if wanting to change to manual - chisq.test(FAILORRISK[,c(1,3)])
 
 # Supplemental Figure 1 ---------------------------------------------------
 

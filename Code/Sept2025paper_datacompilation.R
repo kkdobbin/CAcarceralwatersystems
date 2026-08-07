@@ -1,5 +1,5 @@
 #Data compilation script by Kristin Dobbin 
-##Overview - this script compiles all of the data used in the paper analyses, resulting in the csv for analysis entitled "Fullpaperdata_Sept24"
+##Overview - this script compiles all of the data used in the paper analyses, resulting in the csv for analysis entitled "Fullpaperdata_Sept24". The data sources utilized include: 1) violation data and system type compiled by J. Rempel ("acr_df_for_analysis_aug292025.csv"); 2) CA SDWIS data downloaded 08-12-2025 ("CASDWIS_WaterSystemSummary_20250812.csv"); 3) system boundary data ("i03_Hydrologic_Regions/i03_Hydrologic_Regions.shp"; 4) California hydro region data ("California_Drinking_Water_System_Area_Boundaries.geojson"); 4) 2025 SWRCB risk assessment data ("2025riskassessment_categorysummarylevels.csv"); 5) DWR water shortage vulnerability tool data ("i07_Water_Shortage_Vulnerability_Small_Water_Systems.csv"); 6) CCR data compiled by web scrapping by K. Dobbin ("NCCR_full_master.csv") (see CCR_scrape_full.R script). 
 
 #Load libraries
 library(tidyverse)
@@ -120,7 +120,7 @@ CCR <- read_csv("Data/NCCR_full_master.csv")
 #Join wiht main data
 Data <- left_join(Data, CCR, join_by("pwsid" == "id"))
 
-#create a final indicator for which systems had CCRs pulled for reference since I did it in two batches after our universe of systems changed
+#create a final indicator for which systems had CCRs pulled for reference since I did it in two batches after our universe of systems changed just to make sure all were covered (this step is not necessary)
 PulledCCR_first <- read_csv("Data/binary_usepa_outcomes_081125_KD.csv")
 PulledCCR_first <- PulledCCR_first[,1]
 PulledCCR_second <- read_csv("Data/additionalCCRpullsneeded.csv")

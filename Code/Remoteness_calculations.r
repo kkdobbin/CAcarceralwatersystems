@@ -1,3 +1,6 @@
+#Script by Kristin Dobbin for calculating remoteness indicator for water systems as part of addressing reviewer comments
+#Overview: This script uses several data sources to calculate a remoteness variable for the sample of water systems. The output data is the "Remoteness.csv". The input data includes: 1) CalTrans urban area data ("2020_Adjusted_Urban_Area/"); and 2) water system boundaries ("California_Drinking_Water_System_Area_Boundaries.geojson"). 
+
 #Remoteness calculation
 library(tidyverse)
 library(sf)

@@ -1,4 +1,5 @@
 #Iteratively scrape CCRs for all analyzed systems. Code adapated from Liza Wood by Kristin Dobbin. 
+#Overview: The script webscrapes CCRs to determine which systems are missing how many reports between 2020 and 2023 and then compiles a master dataframe with the results. The output is the dataframe "NCCR_full_master.csv". The input data is only "Data/acr_df_for_analysis_aug292025.csv" (just to determine the sample of systems for the scrape)
 
 library(pdftools)
 library(xlsx)
@@ -7,7 +8,7 @@ library(stringr)
 storage_path <- "~/Box Sync/Carceral_CCRs/"
 
 # Read in and input all of the water system IDs you are interested in
-# So if there are in a data frame just do like this ids <- df$id
+Data <- read_csv("Data/acr_df_for_analysis_aug292025.csv")
 ids <- Data$pwsid
 
 # Honestly everything else from here should run on its own in your computer
@@ -93,7 +94,7 @@ log <- data.frame('id' = rep(ids, each = length(years)),
 log$status <- ifelse(str_detect(paste0(log$id, "_", log$year), 
                                 paste0(str_remove_all(list.files(storage_path), 
                                                       '\\.pdf|\\.xls|\\.doc'), collapse = "|")),
-                                                      'downloaded', 'missing')
+                     'downloaded', 'missing')
 log$status <- as.factor(log$status)
 N_CCR <- log %>% group_by(id) %>% filter(status == "downloaded") %>% summarise(n_ccr_downloaded = n())
 N_CCR2 <- log %>% group_by(id) %>% filter(status == "missing") %>% summarise(n_ccr_missing = n())
@@ -104,7 +105,7 @@ N_CCR_both <- N_CCR_both %>% replace(is.na(.), 0)
 write_csv(N_CCR, "Data/NCCR.csv")
 write_csv(N_CCR2, "Data/NCCR2.csv")
 write_csv(log, "Data/CCR_log.csv")
-write_csv(N_CCR_both, "Data/NCCR_full.csv")
+write_csv(N_CCR_both, "Data/NCCR_full_master.csv")
 
 
 
